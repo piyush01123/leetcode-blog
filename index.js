@@ -3,6 +3,7 @@ const fs = require('fs');
 const { Octokit } = require('@octokit/rest');
 const core = require('@actions/core');
 const { context } = require('@actions/github');
+const maxRetries = 8; // Number of times to do GET on LC api
 const commit_message = 'Sync LeetCode submission';
 const lang_to_extension = {   'bash': 'sh',   'c': 'c',   'cpp': 'cpp',   'csharp': 'cs',   'dart': 'dart',   'golang': 'go',   'java': 'java',   'javascript': 'js',   'kotlin': 'kt',   'mssql': 'sql',   'mysql': 'sql',   'oraclesql': 'sql',   'php': 'php',   'python': 'py',   'python3': 'py',   'ruby': 'rb',   'rust': 'rs',   'scala': 'scala',   'swift': 'swift',   'typescript': 'ts', };
 const destination_folder = "leetcode_solutions"
