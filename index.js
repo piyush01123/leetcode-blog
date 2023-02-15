@@ -1,3 +1,4 @@
+require('dotenv').config(); // process import for env
 const axios = require('axios');
 const fs = require('fs');
 const { Octokit } = require('@octokit/rest');
