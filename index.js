@@ -96,6 +96,9 @@ async function getLastTimestamp()
 
 async function syncSubmissions()
 {
+	console.log("leetcodeCSRFToken", leetcodeCSRFToken);
+	console.log("leetcodeSession", leetcodeSession);
+	console.log("githubToken", githubToken);
 	let lastTimestamp = await getLastTimestamp();
 	let allSubmissions = await getAllSubmissions(lastTimestamp);
 	let treeData = [];
