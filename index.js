@@ -94,6 +94,43 @@ async function getLastTimestamp()
 	return lastTimestamp;
 }
 
+async function initBranch()
+{
+	let treeResponse = await octokit.git.createTree({
+		owner: owner,
+		repo: repo,
+		sha: solutions_branch,
+		tree: [
+			{
+				"path": "README.md",
+				"mode": "100644",
+				"content": "#Leetcode Solutions\nThis branch contains all the Leetcode accepted solutions."
+			}
+		],
+	});
+	let date = new Date().toISOString();
+	let commitResponse = await octokit.git.createCommit({
+		owner: owner,
+		repo: repo,
+		message: `Init Branch - ${new Date().toUTCString()}`,
+		tree: treeResponse.data.sha,
+	});
+	await octokit.git.createRef({
+		owner: owner,
+		repo: repo,
+		sha: commitResponse.data.sha,
+		ref: 'refs/heads/' + solutions_branch,
+		force: true
+	});
+	await octokit.git.updateRef({
+		owner: owner,
+		repo: repo,
+		sha: commitResponse.data.sha,
+		ref: 'heads/' + solutions_branch,
+		force: true
+	});
+}
+
 async function syncSubmissions()
 {
 	console.log("leetcodeCSRFToken", leetcodeCSRFToken);
@@ -116,27 +153,39 @@ async function syncSubmissions()
 			}
 		);
 	}
+	let branches = await octokit.repos.listBranches({
+		owner: owner,
+		repo: repo
+	});
+	let branchNames = [];
+	for (let branch of branches.data) branchNames.push(branch.name);
+	if (!branchNames.includes(solutions_branch)) await initBranch();
+	let refData = await octokit.git.getRef({
+        owner: owner,
+        repo: repo,
+        ref: `heads/${solutions_branch}`,
+    });
+	let commitData = await octokit.git.getCommit(
+		{
+			owner: owner,
+			repo: repo,
+			commit_sha: refData.data.object.sha
+		}
+	)
 	let treeResponse = await octokit.git.createTree({
 		owner: owner,
 		repo: repo,
-		sha: solutions_branch,
 		tree: treeData,
+		base_tree: commitData.data.tree.sha
 	});
 	let date = new Date().toISOString();
 	let commitResponse = await octokit.git.createCommit({
 	  owner: owner,
 	  repo: repo,
-	  message: `${commit_message} - ${new Date().toUTCString()}`,
+	  message: `Testing - ${new Date().toUTCString()}`,
 	  tree: treeResponse.data.sha,
+	  parents: [refData.data.object.sha]
 	});
-	try {await octokit.git.createRef({
-			owner: owner,
-			repo: repo,
-			sha: commitResponse.data.sha,
-			ref: 'refs/heads/' + solutions_branch,
-			force: true
-		});
-	} catch (error) {}
 	await octokit.git.updateRef({
 		owner: owner,
 		repo: repo,
