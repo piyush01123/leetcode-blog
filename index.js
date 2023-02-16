@@ -108,7 +108,6 @@ async function initBranch()
 			}
 		],
 	});
-	let date = new Date().toISOString();
 	let commitResponse = await octokit.git.createCommit({
 		owner: owner,
 		repo: repo,
@@ -179,7 +178,6 @@ async function syncSubmissions()
 		tree: treeData,
 		base_tree: commitData.data.tree.sha
 	});
-	let date = new Date().toISOString();
 	let commitResponse = await octokit.git.createCommit({
 		owner: owner,
 		repo: repo,
