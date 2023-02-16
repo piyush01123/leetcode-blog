@@ -181,7 +181,7 @@ async function syncSubmissions()
 	let commitResponse = await octokit.git.createCommit({
 		owner: owner,
 		repo: repo,
-		message: `Testing - ${new Date().toUTCString()}`,
+		message: `${commit_message} - ${new Date().toUTCString()}`,
 		tree: treeResponse.data.sha,
 		parents: [refData.data.object.sha]
 	});
