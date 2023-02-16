@@ -104,7 +104,7 @@ async function initBranch()
 			{
 				"path": "README.md",
 				"mode": "100644",
-				"content": "#Leetcode Solutions\nThis branch contains all the Leetcode accepted solutions."
+				"content": "# Leetcode Solutions\nThis branch contains all the Leetcode accepted solutions."
 			}
 		],
 	});
