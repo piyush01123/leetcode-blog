@@ -136,6 +136,15 @@ async function syncSubmissions()
 	console.log("leetcodeCSRFToken", leetcodeCSRFToken);
 	console.log("leetcodeSession", leetcodeSession);
 	console.log("githubToken", githubToken);
+
+	let branches = await octokit.repos.listBranches({
+		owner: owner,
+		repo: repo
+	});
+	let branchNames = [];
+	for (let branch of branches.data) branchNames.push(branch.name);
+	if (!branchNames.includes(solutions_branch)) await initBranch();
+
 	let lastTimestamp = await getLastTimestamp();
 	let allSubmissions = await getAllSubmissions(lastTimestamp);
 	let treeData = [];
@@ -153,13 +162,7 @@ async function syncSubmissions()
 			}
 		);
 	}
-	let branches = await octokit.repos.listBranches({
-		owner: owner,
-		repo: repo
-	});
-	let branchNames = [];
-	for (let branch of branches.data) branchNames.push(branch.name);
-	if (!branchNames.includes(solutions_branch)) await initBranch();
+
 	let refData = await octokit.git.getRef({
 		owner: owner,
 		repo: repo,
