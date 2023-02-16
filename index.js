@@ -161,17 +161,15 @@ async function syncSubmissions()
 	for (let branch of branches.data) branchNames.push(branch.name);
 	if (!branchNames.includes(solutions_branch)) await initBranch();
 	let refData = await octokit.git.getRef({
-        owner: owner,
-        repo: repo,
-        ref: `heads/${solutions_branch}`,
-    });
-	let commitData = await octokit.git.getCommit(
-		{
+		owner: owner,
+		repo: repo,
+		ref: `heads/${solutions_branch}`,
+	});
+	let commitData = await octokit.git.getCommit({
 			owner: owner,
 			repo: repo,
 			commit_sha: refData.data.object.sha
-		}
-	)
+	});
 	let treeResponse = await octokit.git.createTree({
 		owner: owner,
 		repo: repo,
@@ -180,11 +178,11 @@ async function syncSubmissions()
 	});
 	let date = new Date().toISOString();
 	let commitResponse = await octokit.git.createCommit({
-	  owner: owner,
-	  repo: repo,
-	  message: `Testing - ${new Date().toUTCString()}`,
-	  tree: treeResponse.data.sha,
-	  parents: [refData.data.object.sha]
+		owner: owner,
+		repo: repo,
+		message: `Testing - ${new Date().toUTCString()}`,
+		tree: treeResponse.data.sha,
+		parents: [refData.data.object.sha]
 	});
 	await octokit.git.updateRef({
 		owner: owner,
@@ -196,4 +194,4 @@ async function syncSubmissions()
 	console.log("Done.");
 }
 
-syncSubmissions().catch((error)=>{console.log(`[${new Date().toUTCString()}] ${error.stack}`);});
+syncSubmissions()

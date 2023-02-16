@@ -8,13 +8,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions: write-all
+    env:
+      GITHUB_TOKEN:  ${{ github.token }}
+      LEETCODE_CSRF_TOKEN: ${{ secrets.LEETCODE_CSRF_TOKEN }}
+      LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
     steps:
     - uses: actions/checkout@v2    
     - uses: actions/setup-node@v3
       with:
         node-version: 16
+    - run: env
     - run: node index.js
-      env:
-        GITHUB_TOKEN:  ${{ github.token }}
-        LEETCODE_CSRF_TOKEN: ${{ secrets.LEETCODE_CSRF_TOKEN }}
-        LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
