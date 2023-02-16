@@ -22,7 +22,8 @@
     "@actions/github": "^5.1.1",
     "@octokit/rest": "^19.0.5",
     "axios": "^0.21.2",
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "random-words": "^1.2.1"
   },
   "devDependencies": {
     "node": "^16.18.1"

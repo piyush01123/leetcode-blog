@@ -3,6 +3,8 @@ const fs = require('fs');
 const { Octokit } = require('@octokit/rest');
 const core = require('@actions/core');
 const { context } = require('@actions/github');
+const randomWords = require('random-words');
+
 const maxRetries = 8; // Number of times to do GET on LC api
 const commit_message = 'Sync LeetCode submission';
 const lang_to_extension = {   'bash': 'sh',   'c': 'c',   'cpp': 'cpp',   'csharp': 'cs',   'dart': 'dart',   'golang': 'go',   'java': 'java',   'javascript': 'js',   'kotlin': 'kt',   'mssql': 'sql',   'mysql': 'sql',   'oraclesql': 'sql',   'php': 'php',   'python': 'py',   'python3': 'py',   'ruby': 'rb',   'rust': 'rs',   'scala': 'scala',   'swift': 'swift',   'typescript': 'ts', };
@@ -17,6 +19,7 @@ const octokit = new Octokit({
 	auth: githubToken,
 	userAgent: 'LeetCode sync to GitHub - GitHub Action',
 });
+
 
 async function getAllSubmissions(lastTimestamp)
 {
@@ -71,6 +74,7 @@ async function getAllSubmissions(lastTimestamp)
 	return allSubmissions;
 }
 
+
 async function getLastTimestamp()
 {
 	let branches = await octokit.repos.listBranches({
@@ -93,6 +97,7 @@ async function getLastTimestamp()
 	}
 	return lastTimestamp;
 }
+
 
 async function initBranch()
 {
@@ -130,6 +135,7 @@ async function initBranch()
 	});
 }
 
+
 async function syncSubmissions()
 {
 	console.log("leetcodeCSRFToken", leetcodeCSRFToken);
@@ -151,7 +157,7 @@ async function syncSubmissions()
 	{
 		let name = submission.title.toLowerCase().replace(/\s/g, '_');;
 		let prefix = !!destination_folder ? `${destination_folder}/` : '';
-		let rand_string = Math.random().toString(36).substr(2);
+		let rand_string = randomWords({exactly: 3, join: '_'});
 		let path = `${prefix}${name}/solution_${rand_string}.${lang_to_extension[submission.lang]}`;
 		treeData.push(
 			{
