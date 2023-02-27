@@ -113,7 +113,7 @@ async function getAllQuestions(){
 			"variables": {
 				"categorySlug": "",
 				"filters": {},
-				"limit": 2,
+				"limit": 1000,
 				"skip": skip,
 			}
 		});
