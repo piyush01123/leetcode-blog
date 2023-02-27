@@ -165,19 +165,18 @@ async function sync()
 	if (!branchNames.includes(solutions_branch)) await initBranch();
 
 	let lastTimestamp = await getLastTimestamp();
-	// let lastTimestamp = await getLastTimestamp();
-	// let question_data = await getAllQuestions();
-	// let post_data = await getAllSolutions(lastTimestamp);
-	// let merged_data = [];
-	// for (let i=0; i<post_data.length; i++)
-	// {
-	// 	merged_data.push({
-	// 		...post_data[i],
-	// 		...(question_data.find((item) => item.title === post_data[i].questionTitle))
-	// 	});
-	// }
+	let question_data = await getAllQuestions();
+	let post_data = await getAllSolutions(lastTimestamp);
+	let merged_data = [];
+	for (let i=0; i<post_data.length; i++)
+	{
+		merged_data.push({
+			...post_data[i],
+			...(question_data.find((item) => item.title === post_data[i].questionTitle))
+		});
+	}
 
-    let merged_data = JSON.parse(fs.readFileSync("jsons/merged_data.json"))
+    // let merged_data = JSON.parse(fs.readFileSync("jsons/merged_data.json"))
 	let treeData = [];
 	let allTags = []
     for(let qa of merged_data)

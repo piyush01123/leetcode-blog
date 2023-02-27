@@ -19,4 +19,5 @@ jobs:
       with:
         node-version: 16
     - run: env
-    - run: node index.js
+    - run: node sync_submissions.js
+    - run: node sync_solutions.js
