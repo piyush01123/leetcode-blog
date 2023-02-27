@@ -1,4 +1,4 @@
-# Leetcode Solutions
+# Leetcode Solutions Reserve
 This repository contains all my leetcode solutions (AC) on the branch `leetcode`. You can use this repo to sync your own leetcode solutions.
 
 ## How to use
