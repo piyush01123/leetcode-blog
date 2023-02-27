@@ -23,6 +23,7 @@
     "@octokit/rest": "^19.0.5",
     "axios": "^0.21.2",
     "fs": "0.0.1-security",
+    "glob": "^8.1.0",
     "random-words": "^1.2.1"
   },
   "devDependencies": {
