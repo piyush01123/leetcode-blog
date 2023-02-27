@@ -10,6 +10,8 @@ This is a tool to sync your leetcode submissions and discussion posts into a blo
 
 3. Go to Actions -> Sync My Leetcode Submissions -> Run workflow. Refesh to see logs.
 4. Go to repo settings -> pages -> build and deployment. Select branch `lcblog`.
+5. If everything has worked till now, you should now be able to see your blog at `${username}.github.io/leetcode-solutions`. Note that you need to have a working root url (`${username}.github.io`). Hopefully you already have a personal webiste on this URL. If not, create a blank website to make the URL active.
+6. Also all your submissions should be present on `leetcode` branch.
 
 # Acknowledgement
-This repo is inspired from https://github.com/joshcai/leetcode-sync. I have made the code more readable and easier to work on if required. Also does not need to create new Github action.
+This repo is inspired from [here](https://github.com/joshcai/leetcode-sync). The crucial addition is automatic creation of blog. I have made the code more readable and easier to work on if required. Also does not need to create new Github action.
