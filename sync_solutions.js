@@ -103,7 +103,8 @@ async function initBranch()
 }
 
 
-async function getAllQuestions(){	
+async function getAllQuestions(){
+	if (glob.sync('jsons/question_data.json').length) return JSON.parse(fs.readFileSync("jsons/question_data.json"));	
 	let question_data = [];
 	for (let skip of [0,1000,2000])
 	{
