@@ -1,5 +1,5 @@
 # Leetcode Solutions
-This is a tool to sync your leetcode discussion posts into an automatically generated blog. My blog is present at https://piyush01123.github.io/leetcode-solutions. The blog has tags on each post and one can look up all the posts with a tag. Here are some screenshots
+This is a tool to sync your leetcode discussion posts into an automatically generated blog. My blog is present at https://piyush01123.github.io/leetcode-solutions. The blog has tags on each post and one can look up all the posts with a tag. Here are some screenshots:
 
 <!-- <p align="center">
 <img src="https://user-images.githubusercontent.com/19518507/221754151-d08cb4a6-d905-44f5-9e31-4ab1fbc2a219.png" height="500">
