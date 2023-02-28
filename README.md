@@ -1,16 +1,11 @@
 # Leetcode Solutions
 This is a tool to sync your leetcode discussion posts into an automatically generated blog. My blog is present at https://piyush01123.github.io/leetcode-solutions. The blog has tags on each post and one can look up all the posts having a specific tag. Here are some screenshots:
 
-<!-- <p align="center">
-<img src="https://user-images.githubusercontent.com/19518507/221754151-d08cb4a6-d905-44f5-9e31-4ab1fbc2a219.png" height="500">
-</p>
- -->
-<!-- ![Screenshot 2023-02-28 at 10 10 13 AM](https://user-images.githubusercontent.com/19518507/221755658-54cb99d2-1679-40df-bb57-f593ed7e249a.png)
- -->
+
 
 &nbsp;             |  &nbsp;
 :-------------------------:|:-------------------------:
-![](https://user-images.githubusercontent.com/19518507/221754151-d08cb4a6-d905-44f5-9e31-4ab1fbc2a219.png)  |  ![](https://user-images.githubusercontent.com/19518507/221755658-54cb99d2-1679-40df-bb57-f593ed7e249a.png)
+![](https://user-images.githubusercontent.com/19518507/221756743-eb4b608a-1fdd-4f5a-ba5b-d36bcf1e31a5.png)  |  ![](https://user-images.githubusercontent.com/19518507/221755658-54cb99d2-1679-40df-bb57-f593ed7e249a.png)
 
 This tool will also sync all your submissions (AC status) into another branch.
 
