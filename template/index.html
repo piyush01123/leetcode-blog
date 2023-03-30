@@ -49,19 +49,17 @@ layout: default
     {% if site.paginate %}
       <div class="pagination">
         {% if paginator.previous_page %}
-          <a href="{{site.baseurl}}/{{ paginator.previous_page_path }}" class="prev$
-            Previous
-          </a>
+          <a href="{{site.baseurl}}/{{ paginator.previous_page_path }}" class="previous"> Previous </a>
         {% else %}
           <span class="previous">Previous</span>
         {% endif %}
         <span class="page_number ">
-          &NonBreakingSpace;   &NonBreakingSpace;
+          &NonBreakingSpace;   &NonBreakingSpace;   &NonBreakingSpace;   &NonBreakingSpace;
           Page: {{ paginator.page }} of {{ paginator.total_pages }}
-        </span>
+          </span>
         {% if paginator.next_page %}
-        &NonBreakingSpace;   &NonBreakingSpace;
-        <a href="{{site.baseurl}}/{{ paginator.next_page_path }}" class="next">Next$
+          &NonBreakingSpace;   &NonBreakingSpace;   &NonBreakingSpace;   &NonBreakingSpace;
+          <a href="{{site.baseurl}}/{{ paginator.next_page_path }}" class="next">Next</a>
         {% else %}
           <span class="next ">Next</span>
         {% endif %}
