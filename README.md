@@ -2,10 +2,16 @@
 This is a tool to sync your leetcode discussion posts into an automatically generated blog. My blog is present at https://piyush01123.github.io/leetcode-blog. The blog has tags on each post and one can look up all the posts having a specific tag. Here are some screenshots:
 
 
-
+<!--
 &nbsp;             |  &nbsp;
 :-------------------------:|:-------------------------:
 ![](https://user-images.githubusercontent.com/19518507/221756743-eb4b608a-1fdd-4f5a-ba5b-d36bcf1e31a5.png)  |  ![](https://user-images.githubusercontent.com/19518507/221755658-54cb99d2-1679-40df-bb57-f593ed7e249a.png)
+-->
+
+&nbsp;             |  &nbsp;             |  &nbsp;
+:-------------------------:|:-------------------------:|:-------------------------:
+![Screenshot 2023-03-30 at 12 56 06 PM](https://user-images.githubusercontent.com/19518507/228761341-6cb9ba91-6331-4828-bcb1-6f0207d1b759.png) | ![Screenshot 2023-03-30 at 12 56 24 PM](https://user-images.githubusercontent.com/19518507/228761387-b013c7f2-258f-4dfe-8c97-da6390d03ec6.png) | ![Screenshot 2023-03-30 at 12 56 15 PM](https://user-images.githubusercontent.com/19518507/228761398-7fbd0627-3f22-4033-8791-71c0b0779190.png)
+
 
 ## How to create your own leetcode blog
 1. Fork this repo. **Make sure to choose default branch `master` only**
