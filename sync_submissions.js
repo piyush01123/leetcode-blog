@@ -6,10 +6,9 @@ const { context } = require('@actions/github');
 const randomWords = require('random-words');
 
 const maxRetries = 8; // Number of times to do GET on LC api
-const commit_message = 'Sync LeetCode submission';
+const commit_message = 'Sync LeetCode submissions';
 const lang_to_extension = {   'bash': 'sh',   'c': 'c',   'cpp': 'cpp',   'csharp': 'cs',   'dart': 'dart',   'golang': 'go',   'java': 'java',   'javascript': 'js',   'kotlin': 'kt',   'mssql': 'sql',   'mysql': 'sql',   'oraclesql': 'sql',   'php': 'php',   'python': 'py',   'python3': 'py',   'ruby': 'rb',   'rust': 'rs',   'scala': 'scala',   'swift': 'swift',   'typescript': 'ts', };
-const destination_folder = "leetcode_solutions"
-const solutions_branch = "leetcode"
+const submissions_branch = "ac_submissions"
 const owner = context.repo.owner;
 const repo = context.repo.repo;
 const leetcodeCSRFToken = process.env.LEETCODE_CSRF_TOKEN;
@@ -83,12 +82,12 @@ async function getLastTimestamp()
 	});
 	let branchNames = [];
 	for (let branch of branches.data) branchNames.push(branch.name);
-	if (!branchNames.includes(solutions_branch)) return 0;
+	if (!branchNames.includes(submissions_branch)) return 0;
 	let commits = await octokit.repos.listCommits({
 		owner: owner,
 		repo: repo,
 		per_page: 100,
-		sha: solutions_branch
+		sha: submissions_branch
 	});
 	let lastTimestamp = 0;
 	for (let commit of commits.data) {
@@ -104,7 +103,7 @@ async function initBranch()
 	let treeResponse = await octokit.git.createTree({
 		owner: owner,
 		repo: repo,
-		sha: solutions_branch,
+		sha: submissions_branch,
 		tree: [
 			{
 				"path": "README.md",
@@ -123,14 +122,14 @@ async function initBranch()
 		owner: owner,
 		repo: repo,
 		sha: commitResponse.data.sha,
-		ref: 'refs/heads/' + solutions_branch,
+		ref: 'refs/heads/' + submissions_branch,
 		force: true
 	});
 	await octokit.git.updateRef({
 		owner: owner,
 		repo: repo,
 		sha: commitResponse.data.sha,
-		ref: 'heads/' + solutions_branch,
+		ref: 'heads/' + submissions_branch,
 		force: true
 	});
 }
@@ -148,7 +147,7 @@ async function syncSubmissions()
 	});
 	let branchNames = [];
 	for (let branch of branches.data) branchNames.push(branch.name);
-	if (!branchNames.includes(solutions_branch)) await initBranch();
+	if (!branchNames.includes(submissions_branch)) await initBranch();
 
 	let lastTimestamp = await getLastTimestamp();
 	let allSubmissions = await getAllSubmissions(lastTimestamp);
@@ -156,9 +155,8 @@ async function syncSubmissions()
 	for (let submission of allSubmissions)
 	{
 		let name = submission.title.toLowerCase().replace(/\s/g, '_');;
-		let prefix = !!destination_folder ? `${destination_folder}/` : '';
 		let rand_string = randomWords({exactly: 3, join: '_'});
-		let path = `${prefix}${name}/solution_${rand_string}.${lang_to_extension[submission.lang]}`;
+		let path = `${name}/solution_${rand_string}.${lang_to_extension[submission.lang]}`;
 		treeData.push(
 			{
 				path: path,
@@ -171,7 +169,7 @@ async function syncSubmissions()
 	let refData = await octokit.git.getRef({
 		owner: owner,
 		repo: repo,
-		ref: `heads/${solutions_branch}`,
+		ref: `heads/${submissions_branch}`,
 	});
 	let commitData = await octokit.git.getCommit({
 			owner: owner,
@@ -195,7 +193,7 @@ async function syncSubmissions()
 		owner: owner,
 		repo: repo,
 		sha: commitResponse.data.sha,
-		ref: 'heads/' + solutions_branch,
+		ref: 'heads/' + submissions_branch,
 		force: true
 	});
 	console.log("Done.");

@@ -6,7 +6,7 @@ const { context } = require('@actions/github');
 const glob = require("glob");
 
 const maxRetries = 8; // Number of times to do GET on LC api
-const commit_message = 'Sync LeetCode';
+const commit_message = 'Sync LeetCode posts';
 const blog_branch = "lcblog"
 const owner = context.repo.owner;
 const repo = context.repo.repo;
