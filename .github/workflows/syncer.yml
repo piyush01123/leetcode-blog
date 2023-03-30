@@ -1,4 +1,4 @@
-name: Sync My Leetcode Submissions
+name: Sync my Leetcode content
 
 on:
   workflow_dispatch:
