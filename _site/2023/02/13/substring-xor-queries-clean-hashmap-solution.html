@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Substring XOR Queries - Clean HashMap solution | Leetcode Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Substring XOR Queries - Clean HashMap solution" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Problem Statement: You are given a binary string s, and a 2D integer array queries where queries[i] = [firsti, secondi]." />
+<meta property="og:description" content="Problem Statement: You are given a binary string s, and a 2D integer array queries where queries[i] = [firsti, secondi]." />
+<link rel="canonical" href="http://localhost:4000/leetcode-solutions/2023/02/13/substring-xor-queries-clean-hashmap-solution.html" />
+<meta property="og:url" content="http://localhost:4000/leetcode-solutions/2023/02/13/substring-xor-queries-clean-hashmap-solution.html" />
+<meta property="og:site_name" content="Leetcode Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-02-13T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Substring XOR Queries - Clean HashMap solution" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-02-13T00:00:00+00:00","datePublished":"2023-02-13T00:00:00+00:00","description":"Problem Statement: You are given a binary string s, and a 2D integer array queries where queries[i] = [firsti, secondi].","headline":"Substring XOR Queries - Clean HashMap solution","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/leetcode-solutions/2023/02/13/substring-xor-queries-clean-hashmap-solution.html"},"url":"http://localhost:4000/leetcode-solutions/2023/02/13/substring-xor-queries-clean-hashmap-solution.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/leetcode-solutions/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/leetcode-solutions/feed.xml" title="Leetcode Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/leetcode-solutions/">Leetcode Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/leetcode-solutions/about/">About</a><a class="page-link" href="/leetcode-solutions/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Substring XOR Queries - Clean HashMap solution</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-02-13T00:00:00+00:00" itemprop="datePublished">Feb 13, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Array">Array &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Bit Manipulation">Bit Manipulation &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/C++">C++ &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Hash Table">Hash Table &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Medium">Medium &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/String">String &nbsp;&nbsp;&nbsp; </a><br>
+<br>
+<h1 id="problem-statement">Problem Statement:</h1>
+<p>You are given a <strong>binary string</strong> <code>s</code>, and a <strong>2D</strong> integer array <code>queries</code> where <code>queries[i] = [first<sub>i</sub>, second<sub>i</sub>]</code>.</p>
+
+<p>For the <code>i<sup>th</sup></code> query, find the <strong>shortest substring</strong> of <code>s</code> whose <strong>decimal value</strong>, <code>val</code>, yields <code>second<sub>i</sub></code> when <strong>bitwise XORed</strong> with <code>first<sub>i</sub></code>. In other words, <code>val ^ first<sub>i</sub> == second<sub>i</sub></code>.</p>
+
+<p>The answer to the <code>i<sup>th</sup></code> query is the endpoints (<strong>0-indexed</strong>) of the substring <code>[left<sub>i</sub>, right<sub>i</sub>]</code> or <code>[-1, -1]</code> if no such substring exists. If there are multiple answers, choose the one with the <strong>minimum</strong> <code>left<sub>i</sub></code>.</p>
+
+<p><em>Return an array</em> <code>ans</code> <em>where</em> <code>ans[i] = [left<sub>i</sub>, right<sub>i</sub>]</code> <em>is the answer to the</em> <code>i<sup>th</sup></code> <em>query.</em></p>
+
+<p>A <strong>substring</strong> is a contiguous non-empty sequence of characters within a string.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> s = &quot;101101&quot;, queries = [[0,5],[1,2]]
+<strong>Output:</strong> [[0,2],[2,3]]
+<strong>Explanation:</strong> For the first query the substring in range <code>[0,2]</code> is <strong>&quot;101&quot;</strong> which has a decimal value of <strong><code>5</code></strong>, and <strong><code>5 ^ 0 = 5</code></strong>, hence the answer to the first query is <code>[0,2]</code>. In the second query, the substring in range <code>[2,3]</code> is <strong>&quot;11&quot;,</strong> and has a decimal value of <strong>3</strong>, and <strong>3<code> ^ 1 = 2</code></strong>.&nbsp;So, <code>[2,3]</code> is returned for the second query. 
+
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> s = &quot;0101&quot;, queries = [[12,8]]
+<strong>Output:</strong> [[-1,-1]]
+<strong>Explanation:</strong> In this example there is no substring that answers the query, hence <code>[-1,-1] is returned</code>.
+</pre>
+
+<p><strong class="example">Example 3:</strong></p>
+
+<pre>
+<strong>Input:</strong> s = &quot;1&quot;, queries = [[4,5]]
+<strong>Output:</strong> [[0,0]]
+<strong>Explanation:</strong> For this example, the substring in range <code>[0,0]</code> has a decimal value of <strong><code>1</code></strong>, and <strong><code>1 ^ 4 = 5</code></strong>. So, the answer is <code>[0,0]</code>.
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>1 &lt;= s.length &lt;= 10<sup>4</sup></code></li>
+	<li><code>s[i]</code> is either <code>&#39;0&#39;</code> or <code>&#39;1&#39;</code>.</li>
+	<li><code>1 &lt;= queries.length &lt;= 10<sup>5</sup></code></li>
+	<li><code>0 &lt;= first<sub>i</sub>, second<sub>i</sub> &lt;= 10<sup>9</sup></code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<h1 id="intuition">Intuition</h1>
+<p>The idea is to store all (upto 32 digits long) binary substrings of <code class="language-plaintext highlighter-rouge">"s"</code> in a hashmap and then check the hashmap for each query.</p>
+
+<p>Here is the logic to enumerate all non-zero binary substrings of a string of length 1 to 32:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s">"0"</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">min</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">32</span><span class="p">,</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">());</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="p">(</span><span class="n">num</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="s">"0"</span><span class="p">);</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"substring:"</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">",value:"</span> <span class="o">&lt;&lt;</span> <span class="n">num</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
+ </code></pre></figure>
+
+<p>We just need to expand this logic to also consider the substring <code class="language-plaintext highlighter-rouge">"0"</code> and also to create a hashmap of <code class="language-plaintext highlighter-rouge">num: [i,j]</code> instead of just printing.</p>
+
+<p>The hashmap stores the positions of first instance of a substring.</p>
+
+<p>While querying, we are looking for <code class="language-plaintext highlighter-rouge">query[0]^query[1]</code> because <code class="language-plaintext highlighter-rouge">a^c=b =&gt; c=a^b</code>. If we find it in hashmap we append its positions to result else append <code class="language-plaintext highlighter-rouge">[-1,-1]</code>.</p>
+
+<h1 id="code">Code</h1>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">substringXorQueries</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">queries</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">H</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s">"0"</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">H</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="n">H</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">};</span> 
+                <span class="k">continue</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">min</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">32</span><span class="p">,(</span><span class="kt">int</span><span class="p">)</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">());</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> 
+            <span class="p">{</span>
+                <span class="n">num</span> <span class="o">=</span> <span class="p">(</span><span class="n">num</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="s">"0"</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">H</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">num</span><span class="p">))</span> <span class="n">H</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">};</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">res</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="n">query</span><span class="o">:</span> <span class="n">queries</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">val</span> <span class="o">=</span> <span class="n">query</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">^</span><span class="n">query</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">H</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="n">res</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">H</span><span class="p">[</span><span class="n">val</span><span class="p">]);</span>
+            <span class="k">else</span> <span class="n">res</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">});</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+<h1 id="complexity">Complexity</h1>
+<p>TC: $O(n+m)$, SC: $O(n+m)$ where $n=\vert s \vert$, $m=\vert Q \vert $</p>
+
+<h3 id="note-on-limits">Note on limits</h3>
+<p>Actually we can also change the for loop to only consider substrings of upto 30 digits long: <code class="language-plaintext highlighter-rouge">for (int j=i; j&lt;min(i+30,(int)s.length()); j++)</code>. This is because both <code class="language-plaintext highlighter-rouge">first</code> and <code class="language-plaintext highlighter-rouge">second</code> are in the range $[0,10^9]$, we know that $10^9$ in binary is 30 digits long. Hence their XOR can be at max 30 digits long ie their maximum value can be <code class="language-plaintext highlighter-rouge">2^{30}-1</code>.</p>
+
+<p>In the current solution written above, the hashmap will also contain -ve numbers which is not useful for us but does us no harm. By changing 32 to 30 in the for loop, we can make hashmap a little bit smaller.</p>
+
+  </div><a class="u-url" href="/leetcode-solutions/2023/02/13/substring-xor-queries-clean-hashmap-solution.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/leetcode-solutions/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Leetcode Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Leetcode Blog</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/piyush01123"><svg class="svg-icon"><use xlink:href="/leetcode-solutions/assets/minima-social-icons.svg#github"></use></svg> <span class="username">piyush01123</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog of all my leetcode discussion posts.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

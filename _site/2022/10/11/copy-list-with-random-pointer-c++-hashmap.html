@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Copy List with Random Pointer - C++ Hashmap | Leetcode Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Copy List with Random Pointer - C++ Hashmap" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Problem Statement: A linked list of length n is given such that each node contains an additional random pointer, which could point to any node in the list, or null." />
+<meta property="og:description" content="Problem Statement: A linked list of length n is given such that each node contains an additional random pointer, which could point to any node in the list, or null." />
+<link rel="canonical" href="http://localhost:4000/leetcode-solutions/2022/10/11/copy-list-with-random-pointer-c++-hashmap.html" />
+<meta property="og:url" content="http://localhost:4000/leetcode-solutions/2022/10/11/copy-list-with-random-pointer-c++-hashmap.html" />
+<meta property="og:site_name" content="Leetcode Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-10-11T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Copy List with Random Pointer - C++ Hashmap" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-10-11T00:00:00+00:00","datePublished":"2022-10-11T00:00:00+00:00","description":"Problem Statement: A linked list of length n is given such that each node contains an additional random pointer, which could point to any node in the list, or null.","headline":"Copy List with Random Pointer - C++ Hashmap","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/leetcode-solutions/2022/10/11/copy-list-with-random-pointer-c++-hashmap.html"},"url":"http://localhost:4000/leetcode-solutions/2022/10/11/copy-list-with-random-pointer-c++-hashmap.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/leetcode-solutions/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/leetcode-solutions/feed.xml" title="Leetcode Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/leetcode-solutions/">Leetcode Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/leetcode-solutions/about/">About</a><a class="page-link" href="/leetcode-solutions/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Copy List with Random Pointer - C++ Hashmap</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-10-11T00:00:00+00:00" itemprop="datePublished">Oct 11, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/C++">C++ &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Hash Table">Hash Table &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Linked List">Linked List &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Medium">Medium &nbsp;&nbsp;&nbsp; </a><br>
+<br>
+<h1 id="problem-statement">Problem Statement:</h1>
+<p>A linked list of length <code>n</code> is given such that each node contains an additional random pointer, which could point to any node in the list, or <code>null</code>.</p>
+
+<p>Construct a <a href="https://en.wikipedia.org/wiki/Object_copying#Deep_copy" target="_blank"><strong>deep copy</strong></a> of the list. The deep copy should consist of exactly <code>n</code> <strong>brand new</strong> nodes, where each new node has its value set to the value of its corresponding original node. Both the <code>next</code> and <code>random</code> pointer of the new nodes should point to new nodes in the copied list such that the pointers in the original list and copied list represent the same list state. <strong>None of the pointers in the new list should point to nodes in the original list</strong>.</p>
+
+<p>For example, if there are two nodes <code>X</code> and <code>Y</code> in the original list, where <code>X.random --&gt; Y</code>, then for the corresponding two nodes <code>x</code> and <code>y</code> in the copied list, <code>x.random --&gt; y</code>.</p>
+
+<p>Return <em>the head of the copied linked list</em>.</p>
+
+<p>The linked list is represented in the input/output as a list of <code>n</code> nodes. Each node is represented as a pair of <code>[val, random_index]</code> where:</p>
+
+<ul>
+	<li><code>val</code>: an integer representing <code>Node.val</code></li>
+	<li><code>random_index</code>: the index of the node (range from <code>0</code> to <code>n-1</code>) that the <code>random</code> pointer points to, or <code>null</code> if it does not point to any node.</li>
+</ul>
+
+<p>Your code will <strong>only</strong> be given the <code>head</code> of the original linked list.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2019/12/18/e1.png" style="width: 700px; height: 142px;" /></p>
+<pre>
+<strong>Input:</strong> head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+<strong>Output:</strong> [[7,null],[13,0],[11,4],[10,2],[1,0]]
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2019/12/18/e2.png" style="width: 700px; height: 114px;" /></p>
+<pre>
+<strong>Input:</strong> head = [[1,1],[2,1]]
+<strong>Output:</strong> [[1,1],[2,1]]
+</pre>
+
+<p><strong class="example">Example 3:</strong></p>
+
+<p><strong><img alt="" src="https://assets.leetcode.com/uploads/2019/12/18/e3.png" style="width: 700px; height: 122px;" /></strong></p>
+
+<pre>
+<strong>Input:</strong> head = [[3,null],[3,0],[3,null]]
+<strong>Output:</strong> [[3,null],[3,0],[3,null]]
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>0 &lt;= n &lt;= 1000</code></li>
+	<li><code>-10<sup>4</sup> &lt;= Node.val &lt;= 10<sup>4</sup></code></li>
+	<li><code>Node.random</code> is <code>null</code> or is pointing to some node in the linked list.</li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">copyRandomList</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">head</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">head</span><span class="p">)</span> <span class="k">return</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">*</span><span class="p">,</span><span class="n">Node</span><span class="o">*&gt;</span> <span class="n">H</span><span class="p">;</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">curr</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">H</span><span class="p">[</span><span class="n">curr</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">);</span>
+            <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">H</span><span class="p">[</span><span class="n">curr</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">];</span>
+            <span class="n">H</span><span class="p">[</span><span class="n">curr</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">random</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">random</span><span class="p">];</span>
+            <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">H</span><span class="p">[</span><span class="n">head</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+  </div><a class="u-url" href="/leetcode-solutions/2022/10/11/copy-list-with-random-pointer-c++-hashmap.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/leetcode-solutions/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Leetcode Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Leetcode Blog</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/piyush01123"><svg class="svg-icon"><use xlink:href="/leetcode-solutions/assets/minima-social-icons.svg#github"></use></svg> <span class="username">piyush01123</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog of all my leetcode discussion posts.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

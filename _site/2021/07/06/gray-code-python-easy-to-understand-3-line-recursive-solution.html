@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Gray Code - Python easy to understand 3 line recursive solution | Leetcode Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Gray Code - Python easy to understand 3 line recursive solution" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Problem Statement: An n-bit gray code sequence is a sequence of 2n integers where:" />
+<meta property="og:description" content="Problem Statement: An n-bit gray code sequence is a sequence of 2n integers where:" />
+<link rel="canonical" href="http://localhost:4000/leetcode-solutions/2021/07/06/gray-code-python-easy-to-understand-3-line-recursive-solution.html" />
+<meta property="og:url" content="http://localhost:4000/leetcode-solutions/2021/07/06/gray-code-python-easy-to-understand-3-line-recursive-solution.html" />
+<meta property="og:site_name" content="Leetcode Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-07-06T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Gray Code - Python easy to understand 3 line recursive solution" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2021-07-06T00:00:00+00:00","datePublished":"2021-07-06T00:00:00+00:00","description":"Problem Statement: An n-bit gray code sequence is a sequence of 2n integers where:","headline":"Gray Code - Python easy to understand 3 line recursive solution","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/leetcode-solutions/2021/07/06/gray-code-python-easy-to-understand-3-line-recursive-solution.html"},"url":"http://localhost:4000/leetcode-solutions/2021/07/06/gray-code-python-easy-to-understand-3-line-recursive-solution.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/leetcode-solutions/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/leetcode-solutions/feed.xml" title="Leetcode Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/leetcode-solutions/">Leetcode Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/leetcode-solutions/about/">About</a><a class="page-link" href="/leetcode-solutions/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Gray Code - Python easy to understand 3 line recursive solution</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2021-07-06T00:00:00+00:00" itemprop="datePublished">Jul 6, 2021
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Backtracking">Backtracking &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Bit Manipulation">Bit Manipulation &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Math">Math &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Medium">Medium &nbsp;&nbsp;&nbsp; </a><br>
+<br>
+<h1 id="problem-statement">Problem Statement:</h1>
+<p>An <strong>n-bit gray code sequence</strong> is a sequence of <code>2<sup>n</sup></code> integers where:</p>
+
+<ul>
+	<li>Every integer is in the <strong>inclusive</strong> range <code>[0, 2<sup>n</sup> - 1]</code>,</li>
+	<li>The first integer is <code>0</code>,</li>
+	<li>An integer appears <strong>no more than once</strong> in the sequence,</li>
+	<li>The binary representation of every pair of <strong>adjacent</strong> integers differs by <strong>exactly one bit</strong>, and</li>
+	<li>The binary representation of the <strong>first</strong> and <strong>last</strong> integers differs by <strong>exactly one bit</strong>.</li>
+</ul>
+
+<p>Given an integer <code>n</code>, return <em>any valid <strong>n-bit gray code sequence</strong></em>.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> n = 2
+<strong>Output:</strong> [0,1,3,2]
+<strong>Explanation:</strong>
+The binary representation of [0,1,3,2] is [00,01,11,10].
+- 0<u>0</u> and 0<u>1</u> differ by one bit
+- <u>0</u>1 and <u>1</u>1 differ by one bit
+- 1<u>1</u> and 1<u>0</u> differ by one bit
+- <u>1</u>0 and <u>0</u>0 differ by one bit
+[0,2,3,1] is also a valid gray code sequence, whose binary representation is [00,10,11,01].
+- <u>0</u>0 and <u>1</u>0 differ by one bit
+- 1<u>0</u> and 1<u>1</u> differ by one bit
+- <u>1</u>1 and <u>0</u>1 differ by one bit
+- 0<u>1</u> and 0<u>0</u> differ by one bit
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> n = 1
+<strong>Output:</strong> [0,1]
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>1 &lt;= n &lt;= 16</code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<p>We see the pattern:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1: [0,1]
+2: [00,01,11,10]
+3: [000,001,011,010,110,111,101,100]
+</code></pre></div></div>
+<p>Notice the following recursive relation:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>grayCode(n) = [grayCode(n-1), new_part]
+</code></pre></div></div>
+<p><code class="language-plaintext highlighter-rouge">new_part</code> consists of <code class="language-plaintext highlighter-rouge">1</code> added to the left of each item in reversed sequence of <code class="language-plaintext highlighter-rouge">grayCode(n-1)</code>.</p>
+
+<p>This leads us to the following code:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">grayCode</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">n</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">grayCode</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prev</span> <span class="o">+</span> <span class="p">[</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prev</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+</code></pre></div></div>
+<p>Time complexity: <code class="language-plaintext highlighter-rouge">O(n)</code>.</p>
+
+  </div><a class="u-url" href="/leetcode-solutions/2021/07/06/gray-code-python-easy-to-understand-3-line-recursive-solution.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/leetcode-solutions/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Leetcode Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Leetcode Blog</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/piyush01123"><svg class="svg-icon"><use xlink:href="/leetcode-solutions/assets/minima-social-icons.svg#github"></use></svg> <span class="username">piyush01123</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog of all my leetcode discussion posts.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

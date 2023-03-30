@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Smallest String With Swaps - DFS solution | Leetcode Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Smallest String With Swaps - DFS solution" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Problem Statement: You are given a string s, and an array of pairs of indices in the string&nbsp;pairs&nbsp;where&nbsp;pairs[i] =&nbsp;[a, b]&nbsp;indicates 2 indices(0-indexed) of the string." />
+<meta property="og:description" content="Problem Statement: You are given a string s, and an array of pairs of indices in the string&nbsp;pairs&nbsp;where&nbsp;pairs[i] =&nbsp;[a, b]&nbsp;indicates 2 indices(0-indexed) of the string." />
+<link rel="canonical" href="http://localhost:4000/leetcode-solutions/2022/04/27/smallest-string-with-swaps-dfs-solution.html" />
+<meta property="og:url" content="http://localhost:4000/leetcode-solutions/2022/04/27/smallest-string-with-swaps-dfs-solution.html" />
+<meta property="og:site_name" content="Leetcode Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-04-27T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Smallest String With Swaps - DFS solution" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-04-27T00:00:00+00:00","datePublished":"2022-04-27T00:00:00+00:00","description":"Problem Statement: You are given a string s, and an array of pairs of indices in the string&nbsp;pairs&nbsp;where&nbsp;pairs[i] =&nbsp;[a, b]&nbsp;indicates 2 indices(0-indexed) of the string.","headline":"Smallest String With Swaps - DFS solution","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/leetcode-solutions/2022/04/27/smallest-string-with-swaps-dfs-solution.html"},"url":"http://localhost:4000/leetcode-solutions/2022/04/27/smallest-string-with-swaps-dfs-solution.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/leetcode-solutions/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/leetcode-solutions/feed.xml" title="Leetcode Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/leetcode-solutions/">Leetcode Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/leetcode-solutions/about/">About</a><a class="page-link" href="/leetcode-solutions/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Smallest String With Swaps - DFS solution</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-04-27T00:00:00+00:00" itemprop="datePublished">Apr 27, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Breadth-First Search">Breadth-First Search &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/C++">C++ &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Depth-First Search">Depth-First Search &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Hash Table">Hash Table &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Medium">Medium &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/String">String &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Union Find">Union Find &nbsp;&nbsp;&nbsp; </a><br>
+<br>
+<h1 id="problem-statement">Problem Statement:</h1>
+<p>You are given a string <code>s</code>, and an array of pairs of indices in the string&nbsp;<code>pairs</code>&nbsp;where&nbsp;<code>pairs[i] =&nbsp;[a, b]</code>&nbsp;indicates 2 indices(0-indexed) of the string.</p>
+
+<p>You can&nbsp;swap the characters at any pair of indices in the given&nbsp;<code>pairs</code>&nbsp;<strong>any number of times</strong>.</p>
+
+<p>Return the&nbsp;lexicographically smallest string that <code>s</code>&nbsp;can be changed to after using the swaps.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> s = &quot;dcab&quot;, pairs = [[0,3],[1,2]]
+<strong>Output:</strong> &quot;bacd&quot;
+<strong>Explaination:</strong> 
+Swap s[0] and s[3], s = &quot;bcad&quot;
+Swap s[1] and s[2], s = &quot;bacd&quot;
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> s = &quot;dcab&quot;, pairs = [[0,3],[1,2],[0,2]]
+<strong>Output:</strong> &quot;abcd&quot;
+<strong>Explaination: </strong>
+Swap s[0] and s[3], s = &quot;bcad&quot;
+Swap s[0] and s[2], s = &quot;acbd&quot;
+Swap s[1] and s[2], s = &quot;abcd&quot;</pre>
+
+<p><strong class="example">Example 3:</strong></p>
+
+<pre>
+<strong>Input:</strong> s = &quot;cba&quot;, pairs = [[0,1],[1,2]]
+<strong>Output:</strong> &quot;abc&quot;
+<strong>Explaination: </strong>
+Swap s[0] and s[1], s = &quot;bca&quot;
+Swap s[1] and s[2], s = &quot;bac&quot;
+Swap s[0] and s[1], s = &quot;abc&quot;
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>1 &lt;= s.length &lt;= 10^5</code></li>
+	<li><code>0 &lt;= pairs.length &lt;= 10^5</code></li>
+	<li><code>0 &lt;= pairs[i][0], pairs[i][1] &lt;&nbsp;s.length</code></li>
+	<li><code>s</code>&nbsp;only contains lower case English letters.</li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<ul>
+  <li>Create graph using <code class="language-plaintext highlighter-rouge">pairs</code> as adjancency list.</li>
+  <li>Start with a node. Do DFS traversal. Sort the node ids (string indices) and characters both. Then put the characters in order.</li>
+  <li>Repeat for all nodes. Do not do for already visited nodes.</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">edges</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">visited</span><span class="p">;</span>
+    
+    <span class="kt">void</span> <span class="n">DFS</span><span class="p">(</span><span class="kt">int</span> <span class="n">src</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">visited_nodes</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">visited</span><span class="p">[</span><span class="n">src</span><span class="p">]</span><span class="o">=</span><span class="nb">true</span><span class="p">;</span>
+        <span class="n">visited_nodes</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">src</span><span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">dest</span><span class="o">:</span> <span class="n">edges</span><span class="p">[</span><span class="n">src</span><span class="p">])</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="n">dest</span><span class="p">])</span> <span class="n">DFS</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">visited_nodes</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">string</span> <span class="nf">smallestStringWithSwaps</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">pairs</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="n">edges</span> <span class="o">=</span>  <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{});</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">p</span><span class="o">:</span> <span class="n">pairs</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">u</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+            <span class="n">edges</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+            <span class="n">edges</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">u</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">u</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">u</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">u</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="n">u</span><span class="p">])</span>
+            <span class="p">{</span>
+                <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">visited_nodes</span><span class="p">;</span>
+                <span class="n">DFS</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">visited_nodes</span><span class="p">);</span>
+                <span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">visited_chars</span><span class="p">;</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">:</span> <span class="n">visited_nodes</span><span class="p">)</span> <span class="n">visited_chars</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                <span class="n">sort</span><span class="p">(</span><span class="n">visited_chars</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">visited_chars</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+                <span class="n">sort</span><span class="p">(</span><span class="n">visited_nodes</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">visited_nodes</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">visited_nodes</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                    <span class="n">s</span><span class="p">[</span><span class="n">visited_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">=</span><span class="n">visited_chars</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">s</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+  </div><a class="u-url" href="/leetcode-solutions/2022/04/27/smallest-string-with-swaps-dfs-solution.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/leetcode-solutions/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Leetcode Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Leetcode Blog</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/piyush01123"><svg class="svg-icon"><use xlink:href="/leetcode-solutions/assets/minima-social-icons.svg#github"></use></svg> <span class="username">piyush01123</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog of all my leetcode discussion posts.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

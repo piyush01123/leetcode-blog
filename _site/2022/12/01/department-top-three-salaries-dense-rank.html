@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Department Top Three Salaries - Dense rank | Leetcode Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Department Top Three Salaries - Dense rank" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Problem Statement: Table: Employee" />
+<meta property="og:description" content="Problem Statement: Table: Employee" />
+<link rel="canonical" href="http://localhost:4000/leetcode-solutions/2022/12/01/department-top-three-salaries-dense-rank.html" />
+<meta property="og:url" content="http://localhost:4000/leetcode-solutions/2022/12/01/department-top-three-salaries-dense-rank.html" />
+<meta property="og:site_name" content="Leetcode Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-12-01T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Department Top Three Salaries - Dense rank" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-12-01T00:00:00+00:00","datePublished":"2022-12-01T00:00:00+00:00","description":"Problem Statement: Table: Employee","headline":"Department Top Three Salaries - Dense rank","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/leetcode-solutions/2022/12/01/department-top-three-salaries-dense-rank.html"},"url":"http://localhost:4000/leetcode-solutions/2022/12/01/department-top-three-salaries-dense-rank.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/leetcode-solutions/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/leetcode-solutions/feed.xml" title="Leetcode Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/leetcode-solutions/">Leetcode Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/leetcode-solutions/about/">About</a><a class="page-link" href="/leetcode-solutions/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Department Top Three Salaries - Dense rank</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-12-01T00:00:00+00:00" itemprop="datePublished">Dec 1, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Database">Database &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Hard">Hard &nbsp;&nbsp;&nbsp; </a><br>
+<br>
+<h1 id="problem-statement">Problem Statement:</h1>
+<p>Table: <code>Employee</code></p>
+
+<pre>
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| id           | int     |
+| name         | varchar |
+| salary       | int     |
+| departmentId | int     |
++--------------+---------+
+id is the primary key column for this table.
+departmentId is a foreign key of the ID from the <code>Department </code>table.
+Each row of this table indicates the ID, name, and salary of an employee. It also contains the ID of their department.
+</pre>
+
+<p>&nbsp;</p>
+
+<p>Table: <code>Department</code></p>
+
+<pre>
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| name        | varchar |
++-------------+---------+
+id is the primary key column for this table.
+Each row of this table indicates the ID of a department and its name.
+</pre>
+
+<p>&nbsp;</p>
+
+<p>A company&#39;s executives are interested in seeing who earns the most money in each of the company&#39;s departments. A <strong>high earner</strong> in a department is an employee who has a salary in the <strong>top three unique</strong> salaries for that department.</p>
+
+<p>Write an SQL query to find the employees who are <strong>high earners</strong> in each of the departments.</p>
+
+<p>Return the result table <strong>in any order</strong>.</p>
+
+<p>The query result format is in the following example.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> 
+Employee table:
++----+-------+--------+--------------+
+| id | name  | salary | departmentId |
++----+-------+--------+--------------+
+| 1  | Joe   | 85000  | 1            |
+| 2  | Henry | 80000  | 2            |
+| 3  | Sam   | 60000  | 2            |
+| 4  | Max   | 90000  | 1            |
+| 5  | Janet | 69000  | 1            |
+| 6  | Randy | 85000  | 1            |
+| 7  | Will  | 70000  | 1            |
++----+-------+--------+--------------+
+Department table:
++----+-------+
+| id | name  |
++----+-------+
+| 1  | IT    |
+| 2  | Sales |
++----+-------+
+<strong>Output:</strong> 
++------------+----------+--------+
+| Department | Employee | Salary |
++------------+----------+--------+
+| IT         | Max      | 90000  |
+| IT         | Joe      | 85000  |
+| IT         | Randy    | 85000  |
+| IT         | Will     | 70000  |
+| Sales      | Henry    | 80000  |
+| Sales      | Sam      | 60000  |
++------------+----------+--------+
+<strong>Explanation:</strong> 
+In the IT department:
+- Max earns the highest unique salary
+- Both Randy and Joe earn the second-highest unique salary
+- Will earns the third-highest unique salary
+
+In the Sales department:
+- Henry earns the highest salary
+- Sam earns the second-highest salary
+- There is no third-highest salary as there are only two employees
+</pre>
+
+<h1 id="solution">Solution:</h1>
+<p>To understand this, you need to understand rank and dense rank.</p>
+<h1 id="rank">Rank</h1>
+<p>Say you have these <code class="language-plaintext highlighter-rouge">(name,salary)</code> rows in table T as</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(A,100), (B,200), (C,200)
+</code></pre></div></div>
+<p>Then
+the result of query</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select *,rank() over(order by salary desc) as sal_rank from T
+</code></pre></div></div>
+<p>will be</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(B,200,1),(C,200,1),(A,100,3)
+</code></pre></div></div>
+<p>ie in case of clash same rank is given to all clashing and some ranks will be skipped.</p>
+
+<p>However <code class="language-plaintext highlighter-rouge">dense_rank</code> query</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select *,dense_rank() over(order by salary desc) as sal_rank from T
+</code></pre></div></div>
+<p>will give following output</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(B,200,1),(C,200,1),(A,100,2)
+</code></pre></div></div>
+<p>ie same rank is given for clash similar to <code class="language-plaintext highlighter-rouge">rank()</code> but no ranks are skipped.</p>
+
+<p>Other trick to know is <code class="language-plaintext highlighter-rouge">partition by</code> inside the <code class="language-plaintext highlighter-rouge">over()</code> argument in <code class="language-plaintext highlighter-rouge">dense_rank()</code> function, just add <code class="language-plaintext highlighter-rouge">partition by dept</code> then, the ranks will be for people having same value of <code class="language-plaintext highlighter-rouge">dept</code>.</p>
+
+<h1 id="sql-code">SQL code:</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select department,employee,salary from (
+select *, dense_rank() over (partition by department order by salary desc) as sal_rank from 
+(select E.name as employee,D.name as department,E.salary from employee E inner join department D on E.departmentid = D.id) as T1
+) as T2
+where T2.sal_rank&lt;=3
+</code></pre></div></div>
+
+  </div><a class="u-url" href="/leetcode-solutions/2022/12/01/department-top-three-salaries-dense-rank.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/leetcode-solutions/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Leetcode Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Leetcode Blog</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/piyush01123"><svg class="svg-icon"><use xlink:href="/leetcode-solutions/assets/minima-social-icons.svg#github"></use></svg> <span class="username">piyush01123</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog of all my leetcode discussion posts.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

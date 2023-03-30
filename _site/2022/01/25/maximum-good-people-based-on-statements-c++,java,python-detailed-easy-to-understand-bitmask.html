@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Maximum Good People Based on Statements - [C++,Java,Python] Detailed easy to understand bitmask | Leetcode Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Maximum Good People Based on Statements - [C++,Java,Python] Detailed easy to understand bitmask" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Problem Statement: There are two types of persons:" />
+<meta property="og:description" content="Problem Statement: There are two types of persons:" />
+<link rel="canonical" href="http://localhost:4000/leetcode-solutions/2022/01/25/maximum-good-people-based-on-statements-c++,java,python-detailed-easy-to-understand-bitmask.html" />
+<meta property="og:url" content="http://localhost:4000/leetcode-solutions/2022/01/25/maximum-good-people-based-on-statements-c++,java,python-detailed-easy-to-understand-bitmask.html" />
+<meta property="og:site_name" content="Leetcode Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-01-25T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Maximum Good People Based on Statements - [C++,Java,Python] Detailed easy to understand bitmask" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-01-25T00:00:00+00:00","datePublished":"2022-01-25T00:00:00+00:00","description":"Problem Statement: There are two types of persons:","headline":"Maximum Good People Based on Statements - [C++,Java,Python] Detailed easy to understand bitmask","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/leetcode-solutions/2022/01/25/maximum-good-people-based-on-statements-c++,java,python-detailed-easy-to-understand-bitmask.html"},"url":"http://localhost:4000/leetcode-solutions/2022/01/25/maximum-good-people-based-on-statements-c++,java,python-detailed-easy-to-understand-bitmask.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/leetcode-solutions/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/leetcode-solutions/feed.xml" title="Leetcode Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/leetcode-solutions/">Leetcode Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/leetcode-solutions/about/">About</a><a class="page-link" href="/leetcode-solutions/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Maximum Good People Based on Statements - [C++,Java,Python] Detailed easy to understand bitmask</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-01-25T00:00:00+00:00" itemprop="datePublished">Jan 25, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Array">Array &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Backtracking">Backtracking &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Bit Manipulation">Bit Manipulation &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/C">C &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Enumeration">Enumeration &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Hard">Hard &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Java">Java &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Python">Python &nbsp;&nbsp;&nbsp; </a><br>
+<br>
+<h1 id="problem-statement">Problem Statement:</h1>
+<p>There are two types of persons:</p>
+
+<ul>
+	<li>The <strong>good person</strong>: The person who always tells the truth.</li>
+	<li>The <strong>bad person</strong>: The person who might tell the truth and might lie.</li>
+</ul>
+
+<p>You are given a <strong>0-indexed</strong> 2D integer array <code>statements</code> of size <code>n x n</code> that represents the statements made by <code>n</code> people about each other. More specifically, <code>statements[i][j]</code> could be one of the following:</p>
+
+<ul>
+	<li><code>0</code> which represents a statement made by person <code>i</code> that person <code>j</code> is a <strong>bad</strong> person.</li>
+	<li><code>1</code> which represents a statement made by person <code>i</code> that person <code>j</code> is a <strong>good</strong> person.</li>
+	<li><code>2</code> represents that <strong>no statement</strong> is made by person <code>i</code> about person <code>j</code>.</li>
+</ul>
+
+<p>Additionally, no person ever makes a statement about themselves. Formally, we have that <code>statements[i][i] = 2</code> for all <code>0 &lt;= i &lt; n</code>.</p>
+
+<p>Return <em>the <strong>maximum</strong> number of people who can be <strong>good</strong> based on the statements made by the </em><code>n</code><em> people</em>.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2022/01/15/logic1.jpg" style="width: 600px; height: 262px;" /></p>
+<pre>
+<strong>Input:</strong> statements = [[2,1,2],[1,2,2],[2,0,2]]
+<strong>Output:</strong> 2
+<strong>Explanation:</strong> Each person makes a single statement.
+- Person 0 states that person 1 is good.
+- Person 1 states that person 0 is good.
+- Person 2 states that person 1 is bad.
+Let&#39;s take person 2 as the key.
+- Assuming that person 2 is a good person:
+    - Based on the statement made by person 2, person 1 is a bad person.
+    - Now we know for sure that person 1 is bad and person 2 is good.
+    - Based on the statement made by person 1, and since person 1 is bad, they could be:
+        - telling the truth. There will be a contradiction in this case and this assumption is invalid.
+        - lying. In this case, person 0 is also a bad person and lied in their statement.
+    - <strong>Following that person 2 is a good person, there will be only one good person in the group</strong>.
+- Assuming that person 2 is a bad person:
+    - Based on the statement made by person 2, and since person 2 is bad, they could be:
+        - telling the truth. Following this scenario, person 0 and 1 are both bad as explained before.
+            - <strong>Following that person 2 is bad but told the truth, there will be no good persons in the group</strong>.
+        - lying. In this case person 1 is a good person.
+            - Since person 1 is a good person, person 0 is also a good person.
+            - <strong>Following that person 2 is bad and lied, there will be two good persons in the group</strong>.
+We can see that at most 2 persons are good in the best case, so we return 2.
+Note that there is more than one way to arrive at this conclusion.
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2022/01/15/logic2.jpg" style="width: 600px; height: 262px;" /></p>
+<pre>
+<strong>Input:</strong> statements = [[2,0],[0,2]]
+<strong>Output:</strong> 1
+<strong>Explanation:</strong> Each person makes a single statement.
+- Person 0 states that person 1 is bad.
+- Person 1 states that person 0 is bad.
+Let&#39;s take person 0 as the key.
+- Assuming that person 0 is a good person:
+    - Based on the statement made by person 0, person 1 is a bad person and was lying.
+    - <strong>Following that person 0 is a good person, there will be only one good person in the group</strong>.
+- Assuming that person 0 is a bad person:
+    - Based on the statement made by person 0, and since person 0 is bad, they could be:
+        - telling the truth. Following this scenario, person 0 and 1 are both bad.
+            - <strong>Following that person 0 is bad but told the truth, there will be no good persons in the group</strong>.
+        - lying. In this case person 1 is a good person.
+            - <strong>Following that person 0 is bad and lied, there will be only one good person in the group</strong>.
+We can see that at most, one person is good in the best case, so we return 1.
+Note that there is more than one way to arrive at this conclusion.
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>n == statements.length == statements[i].length</code></li>
+	<li><code>2 &lt;= n &lt;= 15</code></li>
+	<li><code>statements[i][j]</code> is either <code>0</code>, <code>1</code>, or <code>2</code>.</li>
+	<li><code>statements[i][i] == 2</code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<h1 id="algorithm">Algorithm</h1>
+<p>We have a <code class="language-plaintext highlighter-rouge">statements</code> matrix of size n by n made up of elements 0,1,2 where</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">statements[i][j]=1</code> means <code class="language-plaintext highlighter-rouge">person i</code> thinks <code class="language-plaintext highlighter-rouge">person j</code> is good.</li>
+  <li><code class="language-plaintext highlighter-rouge">statements[i][j]=0</code> means <code class="language-plaintext highlighter-rouge">person i</code> thinks <code class="language-plaintext highlighter-rouge">person j</code> is bad.</li>
+  <li><code class="language-plaintext highlighter-rouge">statements[i][j]=2</code> means <code class="language-plaintext highlighter-rouge">person i</code> doesnt comment on <code class="language-plaintext highlighter-rouge">person j</code>.</li>
+</ul>
+
+<p>We also have these conditions:</p>
+<ul>
+  <li>Good person speaks truth always</li>
+  <li>Bad person can say truth or lie</li>
+</ul>
+
+<p>We want to assign either 1 (for good) and 0 (for bad) to all persons in <code class="language-plaintext highlighter-rouge">0,1,..n-1</code> such that the <code class="language-plaintext highlighter-rouge">statements</code> matrix is feasible.</p>
+
+<h2 id="pseudocode">Pseudocode</h2>
+<p>Now let us write our pseudocode to validate an assignment:</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"> 
+<span class="no">FOR</span> <span class="n">i</span> <span class="n">in</span> <span class="mi">0</span><span class="o">,..,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span>
+	<span class="no">FOR</span> <span class="n">j</span> <span class="n">in</span> <span class="mi">0</span><span class="o">,..,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span>
+			<span class="no">IF</span> <span class="n">person</span> <span class="n">i</span> <span class="n">is</span> <span class="n">good</span> <span class="no">AND</span> <span class="n">person</span> <span class="n">j</span> <span class="err">\</span><span class="n">u2260</span>  <span class="n">statement</span> <span class="n">of</span> <span class="n">person</span> <span class="n">i</span> <span class="n">on</span> <span class="n">person</span> <span class="n">j</span>
+				<span class="no">RETURN</span> <span class="nc">False</span>
+<span class="no">RETURN</span> <span class="nc">True</span>
+ </code></pre></figure>
+
+<p>We simply need to run this for all possible assignments and if the assignment is valid we count the number of ones. At the end we return the maximum number of ones out of all valid assignments.</p>
+
+<h2 id="bitmask">Bitmask</h2>
+<p>Now, to use bitmask, let us have some notation:
+We have <code class="language-plaintext highlighter-rouge">2^n</code> ways of doing the assignment (each person can be either good or bad). Let us denote an assignment as a variable caleld <code class="language-plaintext highlighter-rouge">number</code> which is in the range <code class="language-plaintext highlighter-rouge">[0,2^n-1]</code>.  If ith digit from left is 1 then in our assignment person i is assigned good and if ith digit from left is 0 then in our assignment person i is assigned bad.
+For example say n is 3. The we can have 0,1,2,3,4,5,6,7 as possible assignments.
+0 in binary is <code class="language-plaintext highlighter-rouge">000</code> so means all bad
+1 in binary is <code class="language-plaintext highlighter-rouge">001</code> so means (0,1) are bad and 2 is good
+5 in binary is <code class="language-plaintext highlighter-rouge">101</code> so means (0,2) are good, 1 is bad
+and so on.</p>
+
+<p>Now let us write some logic we are gonna use later:</p>
+<h4 id="how-do-we-find-if-in-our-assignment-ith-person-is-assigned-good-or-bad">How do we find if in our assignment ith person is assigned good or bad?</h4>
+<p>For exampel say our assignment is 5 ie <code class="language-plaintext highlighter-rouge">101</code>. Then</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">5 &amp; 4 &gt; 0</code> means person 0 is assigned 1 ie good</li>
+  <li><code class="language-plaintext highlighter-rouge">5 &amp; 2 == 0</code> means person 1 is assigned 0 ie bad</li>
+  <li><code class="language-plaintext highlighter-rouge">5 &amp; 1 &gt; 0</code> means person 2 is assigned  1 ie good</li>
+</ul>
+
+<p>Basically it is just a way of iterating over the binary representation of the number.</p>
+
+<p>Now that we have all the pieces let us write the code:</p>
+
+<iframe src="https://leetcode.com/playground/8LL9m5Nw/shared" frameborder="0" width="800" height="500"></iframe>
+
+<p>Time complexity: O((n^2 )* (2^n))
+Space complexity: O(1)</p>
+
+<p>This solution beats 80% of the solutions in terms of runtime and beats 95% of solutions in terms of memory. Please upvote if you found this helpful.</p>
+
+  </div><a class="u-url" href="/leetcode-solutions/2022/01/25/maximum-good-people-based-on-statements-c++,java,python-detailed-easy-to-understand-bitmask.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/leetcode-solutions/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Leetcode Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Leetcode Blog</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/piyush01123"><svg class="svg-icon"><use xlink:href="/leetcode-solutions/assets/minima-social-icons.svg#github"></use></svg> <span class="username">piyush01123</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog of all my leetcode discussion posts.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Contiguous Array - Well-explained HashMap concise with pseudocode | Leetcode Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Contiguous Array - Well-explained HashMap concise with pseudocode" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Problem Statement: Given a binary array nums, return the maximum length of a contiguous subarray with an equal number of 0 and 1." />
+<meta property="og:description" content="Problem Statement: Given a binary array nums, return the maximum length of a contiguous subarray with an equal number of 0 and 1." />
+<link rel="canonical" href="http://localhost:4000/leetcode-solutions/2022/02/04/contiguous-array-well-explained-hashmap-concise-with-pseudocode.html" />
+<meta property="og:url" content="http://localhost:4000/leetcode-solutions/2022/02/04/contiguous-array-well-explained-hashmap-concise-with-pseudocode.html" />
+<meta property="og:site_name" content="Leetcode Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-02-04T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Contiguous Array - Well-explained HashMap concise with pseudocode" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-02-04T00:00:00+00:00","datePublished":"2022-02-04T00:00:00+00:00","description":"Problem Statement: Given a binary array nums, return the maximum length of a contiguous subarray with an equal number of 0 and 1.","headline":"Contiguous Array - Well-explained HashMap concise with pseudocode","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/leetcode-solutions/2022/02/04/contiguous-array-well-explained-hashmap-concise-with-pseudocode.html"},"url":"http://localhost:4000/leetcode-solutions/2022/02/04/contiguous-array-well-explained-hashmap-concise-with-pseudocode.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/leetcode-solutions/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/leetcode-solutions/feed.xml" title="Leetcode Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/leetcode-solutions/">Leetcode Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/leetcode-solutions/about/">About</a><a class="page-link" href="/leetcode-solutions/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Contiguous Array - Well-explained HashMap concise with pseudocode</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-02-04T00:00:00+00:00" itemprop="datePublished">Feb 4, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Array">Array &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/C">C &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Hash Table">Hash Table &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Medium">Medium &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Prefix Sum">Prefix Sum &nbsp;&nbsp;&nbsp; </a><br>
+<br>
+<h1 id="problem-statement">Problem Statement:</h1>
+<p>Given a binary array <code>nums</code>, return <em>the maximum length of a contiguous subarray with an equal number of </em><code>0</code><em> and </em><code>1</code>.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> nums = [0,1]
+<strong>Output:</strong> 2
+<strong>Explanation:</strong> [0, 1] is the longest contiguous subarray with an equal number of 0 and 1.
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> nums = [0,1,0]
+<strong>Output:</strong> 2
+<strong>Explanation:</strong> [0, 1] (or [1, 0]) is a longest contiguous subarray with equal number of 0 and 1.
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>
+	<li><code>nums[i]</code> is either <code>0</code> or <code>1</code>.</li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<p>The key idea is to track how many ones and zeros we have seen from the beginning at any point. Let us keep an array that stores how many 1s and 0s we have seen at any point.
+So, we start with counter=0 at the left end and then we can keep increase counter when we see 1 and decrease when we see 0. 
+So, for <code class="language-plaintext highlighter-rouge">[1,0,0,1,1]</code>, this will be <code class="language-plaintext highlighter-rouge">[1,0,-1,0,1]</code>.
+Now at any index if we want to find which all previous indexes we can find answers with, the answer is all the numbers which have the same number in this array. However we only want the smallest index to find the longest subarray. So, we don”t need to actully go through the array. We can do better! Let use a hash map to store the min index for the counter. 
+Running through the same example, we will have the following hashmap:
+The hashmap contains the first index where you achieve any value:
+<code class="language-plaintext highlighter-rouge">H={1:0, 0:1, -1:2}</code></p>
+
+<p>The candidate answer at any index is <code class="language-plaintext highlighter-rouge">i-H[ctr]</code>.</p>
+
+<p>One tiny issue is if you think about <code class="language-plaintext highlighter-rouge">H</code> we have in fact seen 0 even before starting going trough the array. So <code class="language-plaintext highlighter-rouge">H[0]</code> will always be -1. For example if we later see at <code class="language-plaintext highlighter-rouge">i=5</code> that <code class="language-plaintext highlighter-rouge">ctr=0</code> then the possible answer is <code class="language-plaintext highlighter-rouge">5-(-1)</code></p>
+
+<p>So, H will actually be:
+<code class="language-plaintext highlighter-rouge">H={0:-1, 1:0, , -1:2}</code></p>
+
+<p>Now we are ready for coding it up:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Solution {
+public:
+    int findMaxLength(vector&lt;int&gt;&amp; nums) {
+        int ctr=0, res=0, n=nums.size();
+        unordered_map&lt;int,int&gt; H;
+        H[0]=-1;
+        for (int i=0; i&lt;n; i++)
+        {
+            if (nums[i]==1) ctr++;
+            else ctr--;
+            if (H.count(ctr)) res = max(res, i-H[ctr]);
+            else H[ctr]=i;
+        }
+        return res;
+    }
+};
+</code></pre></div></div>
+
+  </div><a class="u-url" href="/leetcode-solutions/2022/02/04/contiguous-array-well-explained-hashmap-concise-with-pseudocode.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/leetcode-solutions/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Leetcode Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Leetcode Blog</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/piyush01123"><svg class="svg-icon"><use xlink:href="/leetcode-solutions/assets/minima-social-icons.svg#github"></use></svg> <span class="username">piyush01123</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog of all my leetcode discussion posts.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

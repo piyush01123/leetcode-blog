@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Construct Quad Tree - 3 ways to do recursion, flyweight pattern | Leetcode Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Construct Quad Tree - 3 ways to do recursion, flyweight pattern" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Problem Statement: Given a n * n matrix grid of 0&#39;s and 1&#39;s only. We want to represent the grid with a Quad-Tree." />
+<meta property="og:description" content="Problem Statement: Given a n * n matrix grid of 0&#39;s and 1&#39;s only. We want to represent the grid with a Quad-Tree." />
+<link rel="canonical" href="http://localhost:4000/leetcode-solutions/2023/02/27/construct-quad-tree-3-ways-to-do-recursion,-flyweight-pattern.html" />
+<meta property="og:url" content="http://localhost:4000/leetcode-solutions/2023/02/27/construct-quad-tree-3-ways-to-do-recursion,-flyweight-pattern.html" />
+<meta property="og:site_name" content="Leetcode Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-02-27T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Construct Quad Tree - 3 ways to do recursion, flyweight pattern" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-02-27T00:00:00+00:00","datePublished":"2023-02-27T00:00:00+00:00","description":"Problem Statement: Given a n * n matrix grid of 0&#39;s and 1&#39;s only. We want to represent the grid with a Quad-Tree.","headline":"Construct Quad Tree - 3 ways to do recursion, flyweight pattern","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/leetcode-solutions/2023/02/27/construct-quad-tree-3-ways-to-do-recursion,-flyweight-pattern.html"},"url":"http://localhost:4000/leetcode-solutions/2023/02/27/construct-quad-tree-3-ways-to-do-recursion,-flyweight-pattern.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/leetcode-solutions/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/leetcode-solutions/feed.xml" title="Leetcode Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/leetcode-solutions/">Leetcode Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/leetcode-solutions/about/">About</a><a class="page-link" href="/leetcode-solutions/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Construct Quad Tree - 3 ways to do recursion, flyweight pattern</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-02-27T00:00:00+00:00" itemprop="datePublished">Feb 27, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Array">Array &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/C++">C++ &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Divide and Conquer">Divide and Conquer &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Matrix">Matrix &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Medium">Medium &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Recursion">Recursion &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Tree">Tree &nbsp;&nbsp;&nbsp; </a><br>
+<br>
+<h1 id="problem-statement">Problem Statement:</h1>
+<p>Given a <code>n * n</code> matrix <code>grid</code> of <code>0&#39;s</code> and <code>1&#39;s</code> only. We want to represent the <code>grid</code> with a Quad-Tree.</p>
+
+<p>Return <em>the root of the Quad-Tree</em> representing the <code>grid</code>.</p>
+
+<p>Notice that you can assign the value of a node to <strong>True</strong> or <strong>False</strong> when <code>isLeaf</code> is <strong>False</strong>, and both are <strong>accepted</strong> in the answer.</p>
+
+<p>A Quad-Tree is a tree data structure in which each internal node has exactly four children. Besides, each node has two attributes:</p>
+
+<ul>
+	<li><code>val</code>: True if the node represents a grid of 1&#39;s or False if the node represents a grid of 0&#39;s.</li>
+	<li><code>isLeaf</code>: True if the node is leaf node on the tree or False if the node has the four children.</li>
+</ul>
+
+<pre>
+class Node {
+    public boolean val;
+    public boolean isLeaf;
+    public Node topLeft;
+    public Node topRight;
+    public Node bottomLeft;
+    public Node bottomRight;
+}</pre>
+
+<p>We can construct a Quad-Tree from a two-dimensional area using the following steps:</p>
+
+<ol>
+	<li>If the current grid has the same value (i.e all <code>1&#39;s</code> or all <code>0&#39;s</code>) set <code>isLeaf</code> True and set <code>val</code> to the value of the grid and set the four children to Null and stop.</li>
+	<li>If the current grid has different values, set <code>isLeaf</code> to False and set <code>val</code> to any value and divide the current grid into four sub-grids as shown in the photo.</li>
+	<li>Recurse for each of the children with the proper sub-grid.</li>
+</ol>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2020/02/11/new_top.png" style="width: 777px; height: 181px;" /></p>
+<p>If you want to know more about the Quad-Tree, you can refer to the <a href="https://en.wikipedia.org/wiki/Quadtree">wiki</a>.</p>
+
+<p><strong>Quad-Tree format:</strong></p>
+
+<p>The output represents the serialized format of a Quad-Tree using level order traversal, where <code>null</code> signifies a path terminator where no node exists below.</p>
+
+<p>It is very similar to the serialization of the binary tree. The only difference is that the node is represented as a list <code>[isLeaf, val]</code>.</p>
+
+<p>If the value of <code>isLeaf</code> or <code>val</code> is True we represent it as <strong>1</strong> in the list <code>[isLeaf, val]</code> and if the value of <code>isLeaf</code> or <code>val</code> is False we represent it as <strong>0</strong>.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2020/02/11/grid1.png" style="width: 777px; height: 99px;" /></p>
+<pre>
+<strong>Input:</strong> grid = [[0,1],[1,0]]
+<strong>Output:</strong> [[0,1],[1,0],[1,1],[1,1],[1,0]]
+<strong>Explanation:</strong> The explanation of this example is shown below:
+Notice that 0 represnts False and 1 represents True in the photo representing the Quad-Tree.
+<img alt="" src="https://assets.leetcode.com/uploads/2020/02/12/e1tree.png" style="width: 777px; height: 186px;" />
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<p><img alt="" src="https://assets.leetcode.com/uploads/2020/02/12/e2mat.png" style="width: 777px; height: 343px;" /></p>
+
+<pre>
+<strong>Input:</strong> grid = [[1,1,1,1,0,0,0,0],[1,1,1,1,0,0,0,0],[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,0],[1,1,1,1,0,0,0,0],[1,1,1,1,0,0,0,0],[1,1,1,1,0,0,0,0]]
+<strong>Output:</strong> [[0,1],[1,1],[0,1],[1,1],[1,0],null,null,null,null,[1,0],[1,0],[1,1],[1,1]]
+<strong>Explanation:</strong> All values in the grid are not the same. We divide the grid into four sub-grids.
+The topLeft, bottomLeft and bottomRight each has the same value.
+The topRight have different values so we divide it into 4 sub-grids where each has the same value.
+Explanation is shown in the photo below:
+<img alt="" src="https://assets.leetcode.com/uploads/2020/02/12/e2tree.png" style="width: 777px; height: 328px;" />
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>n == grid.length == grid[i].length</code></li>
+	<li><code>n == 2<sup>x</sup></code> where <code>0 &lt;= x &lt;= 6</code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<h2 id="recursion---i">Recursion - I</h2>
+<p>We use a <code class="language-plaintext highlighter-rouge">test</code> function to see if a grid is a leaf node or not and if not, we recurse into 4 sub-grids.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="kt">int</span> <span class="nf">test</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span><span class="n">grid</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">grid</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="n">row</span><span class="o">:</span><span class="n">grid</span><span class="p">)</span><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">:</span><span class="n">row</span><span class="p">)</span><span class="n">s</span><span class="o">+=</span><span class="n">k</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="o">==</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="p">))</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">construct</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">grid</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">test</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">test</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">grid</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">tl</span><span class="p">,</span> <span class="n">tr</span><span class="p">,</span> <span class="n">bl</span><span class="p">,</span> <span class="n">br</span><span class="p">;</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">top</span><span class="p">(</span><span class="n">grid</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">grid</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">bot</span><span class="p">(</span><span class="n">grid</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>  <span class="n">grid</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="n">vec</span><span class="o">:</span> <span class="n">top</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">tl</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">));</span>
+            <span class="n">tr</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>   <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">()));</span>
+        <span class="p">}</span>        
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="n">vec</span><span class="o">:</span> <span class="n">bot</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">bl</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">));</span>
+            <span class="n">br</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>   <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">()));</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">construct</span><span class="p">(</span><span class="n">tl</span><span class="p">),</span> <span class="n">construct</span><span class="p">(</span><span class="n">tr</span><span class="p">),</span> \
+            <span class="n">construct</span><span class="p">(</span><span class="n">bl</span><span class="p">),</span> <span class="n">construct</span><span class="p">(</span><span class="n">br</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+<h2 id="recusion---ii">Recusion - II</h2>
+<p>We don”t actually need a <code class="language-plaintext highlighter-rouge">test</code> function because a helper function can do that that job while recursing.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">construct</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">grid</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">helper</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">grid</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">Node</span> <span class="o">*</span><span class="nf">helper</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span><span class="n">grid</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">],</span> <span class="nb">true</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">tl</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">tr</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">bl</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">br</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">tl</span><span class="o">-&gt;</span><span class="n">isLeaf</span> <span class="o">&amp;&amp;</span> <span class="n">tr</span><span class="o">-&gt;</span><span class="n">isLeaf</span> <span class="o">&amp;&amp;</span> <span class="n">bl</span><span class="o">-&gt;</span><span class="n">isLeaf</span> <span class="o">&amp;&amp;</span> <span class="n">br</span><span class="o">-&gt;</span><span class="n">isLeaf</span> <span class="o">&amp;&amp;</span> \
+            <span class="n">tl</span><span class="o">-&gt;</span><span class="n">val</span><span class="o">==</span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">&amp;&amp;</span> <span class="n">tl</span><span class="o">-&gt;</span><span class="n">val</span><span class="o">==</span><span class="n">bl</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">&amp;&amp;</span> <span class="n">tl</span><span class="o">-&gt;</span><span class="n">val</span><span class="o">==</span><span class="n">br</span><span class="o">-&gt;</span><span class="n">val</span>
+           <span class="p">)</span> <span class="k">return</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">tl</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">],</span> <span class="nb">false</span><span class="p">,</span> <span class="n">tl</span><span class="p">,</span> <span class="n">tr</span><span class="p">,</span> <span class="n">bl</span><span class="p">,</span> <span class="n">br</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+<h2 id="recusion---iii-flyweight-pattern">Recusion - III (FLyweight pattern)</h2>
+<p>We can take advantage of the fact that there are fixed number of unique values in the grid: 2.
+So, we can pre-construct a <code class="language-plaintext highlighter-rouge">leaves</code> array and reference leaf nodes from here. Notice also that <code class="language-plaintext highlighter-rouge">Node</code> object does not keep track of the size of grid. We can use this fact to create leaf nodes representing larger grids with the same pre-computed <code class="language-plaintext highlighter-rouge">leaves</code> array.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">Node</span> <span class="o">*&gt;</span> <span class="n">leaves</span> <span class="o">=</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Node</span> <span class="o">*&gt;</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">construct</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">grid</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="n">leaves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span><span class="nb">true</span><span class="p">);</span>
+        <span class="n">leaves</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">helper</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">grid</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">Node</span> <span class="o">*</span><span class="nf">helper</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span><span class="n">grid</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="n">leaves</span><span class="p">[</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]];</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">tl</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">tr</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">bl</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">br</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">tl</span><span class="o">==</span><span class="n">tr</span> <span class="o">&amp;&amp;</span> <span class="n">tl</span><span class="o">==</span><span class="n">bl</span> <span class="o">&amp;&amp;</span> <span class="n">tl</span><span class="o">==</span><span class="n">br</span><span class="p">)</span> <span class="k">return</span> <span class="n">tl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">],</span> <span class="nb">false</span><span class="p">,</span> <span class="n">tl</span><span class="p">,</span> <span class="n">tr</span><span class="p">,</span> <span class="n">bl</span><span class="p">,</span> <span class="n">br</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+ </code></pre></figure>
+
+<p>The 3rd solution is inspired from <a href="https://leetcode.com/problems/construct-quad-tree/solutions/314379/c-flyweight-pattern-overwhelmingly-beats-100-time-and-memory/?q=fly&amp;orderBy=most_relevant">here</a> and is called “Flyweight Pattern” because entire tree is constructed using 2 <code class="language-plaintext highlighter-rouge">Node</code> objects stored in <code class="language-plaintext highlighter-rouge">leaves</code>.</p>
+
+  </div><a class="u-url" href="/leetcode-solutions/2023/02/27/construct-quad-tree-3-ways-to-do-recursion,-flyweight-pattern.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/leetcode-solutions/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Leetcode Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Leetcode Blog</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/piyush01123"><svg class="svg-icon"><use xlink:href="/leetcode-solutions/assets/minima-social-icons.svg#github"></use></svg> <span class="username">piyush01123</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog of all my leetcode discussion posts.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

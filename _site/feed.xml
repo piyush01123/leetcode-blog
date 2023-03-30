@@ -1,0 +1,961 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/leetcode-solutions/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/leetcode-solutions/" rel="alternate" type="text/html" /><updated>2023-03-30T06:12:16+00:00</updated><id>http://localhost:4000/leetcode-solutions/feed.xml</id><title type="html">Leetcode Blog</title><subtitle>A blog of all my leetcode discussion posts.</subtitle><entry><title type="html">Convert Sorted List to Binary Search Tree - An elegant solution</title><link href="http://localhost:4000/leetcode-solutions/2023/03/11/convert-sorted-list-to-binary-search-tree-an-elegant-solution.html" rel="alternate" type="text/html" title="Convert Sorted List to Binary Search Tree - An elegant solution" /><published>2023-03-11T00:00:00+00:00</published><updated>2023-03-11T00:00:00+00:00</updated><id>http://localhost:4000/leetcode-solutions/2023/03/11/convert%20sorted%20list%20to%20binary%20search%20tree-an%20elegant%20solution</id><content type="html" xml:base="http://localhost:4000/leetcode-solutions/2023/03/11/convert-sorted-list-to-binary-search-tree-an-elegant-solution.html"><![CDATA[<h1 id="problem-statement">Problem Statement:</h1>
+<p>Given the <code>head</code> of a singly linked list where elements are sorted in <strong>ascending order</strong>, convert <em>it to a </em><span data-keyword="height-balanced"><strong><em>height-balanced</em></strong></span> <em>binary search tree</em>.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2020/08/17/linked.jpg" style="width: 500px; height: 388px;" /></p>
+<pre>
+<strong>Input:</strong> head = [-10,-3,0,5,9]
+<strong>Output:</strong> [0,-3,9,-10,null,5]
+<strong>Explanation:</strong> One possible answer is [0,-3,9,-10,null,5], which represents the shown height balanced BST.
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> head = []
+<strong>Output:</strong> []
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li>The number of nodes in <code>head</code> is in the range <code>[0, 2 * 10<sup>4</sup>]</code>.</li>
+	<li><code>-10<sup>5</sup> &lt;= Node.val &lt;= 10<sup>5</sup></code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<h2 id="intuition">Intuition</h2>
+<p>The underlying thought is actually pretty simple and common in linked list problems: a tortoise and a hare; 2 pointers that walk on linked lists at 1 node per step for tortoise and 2 nodes per step for hare. When the hare reaches the end, the tortoise has reached the mid of the linked list, which is to be the root of the BST. The left subtree is to the left of this node and the right subtree is to the right, hence we can use recursion to form both subtrees. The boundary line case is when there is no node to traverse, we return null pointer in this case.</p>
+
+<h2 id="code">Code</h2>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="n">TreeNode</span><span class="o">*</span> <span class="nf">sortedListToBST</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">head</span><span class="p">,</span> <span class="n">ListNode</span> <span class="o">*</span><span class="n">end</span><span class="o">=</span><span class="nb">NULL</span><span class="p">)</span> 
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">head</span><span class="o">==</span><span class="n">end</span><span class="p">)</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">ListNode</span> <span class="o">*</span><span class="n">fast</span> <span class="o">=</span> <span class="n">head</span><span class="p">,</span> <span class="o">*</span><span class="n">slow</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">fast</span><span class="o">!=</span><span class="n">end</span> <span class="o">&amp;&amp;</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">!=</span><span class="n">end</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">TreeNode</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="p">;</span>
+    <span class="n">cur</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">;</span>
+    <span class="n">cur</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">=</span> <span class="n">sortedListToBST</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">slow</span><span class="p">);</span>
+    <span class="n">cur</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">=</span> <span class="n">sortedListToBST</span><span class="p">(</span><span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">cur</span><span class="p">;</span>
+<span class="p">}</span>
+ </code></pre></figure>
+
+<p>TC: $O(n \log n)$
+SC: $O(1)$</p>]]></content><author><name></name></author><category term="Linked List" /><category term="Divide and Conquer" /><category term="Tree" /><category term="Binary Search Tree" /><category term="Binary Tree" /><category term="C++" /><category term="Medium" /><summary type="html"><![CDATA[Problem Statement: Given the head of a singly linked list where elements are sorted in ascending order, convert it to a height-balanced binary search tree.]]></summary></entry><entry><title type="html">String Compression - Simple two pointer solution</title><link href="http://localhost:4000/leetcode-solutions/2023/03/02/string-compression-simple-two-pointer-solution.html" rel="alternate" type="text/html" title="String Compression - Simple two pointer solution" /><published>2023-03-02T00:00:00+00:00</published><updated>2023-03-02T00:00:00+00:00</updated><id>http://localhost:4000/leetcode-solutions/2023/03/02/string%20compression-simple%20two%20pointer%20solution</id><content type="html" xml:base="http://localhost:4000/leetcode-solutions/2023/03/02/string-compression-simple-two-pointer-solution.html"><![CDATA[<h1 id="problem-statement">Problem Statement:</h1>
+<p>Given an array of characters <code>chars</code>, compress it using the following algorithm:</p>
+
+<p>Begin with an empty string <code>s</code>. For each group of <strong>consecutive repeating characters</strong> in <code>chars</code>:</p>
+
+<ul>
+	<li>If the group&#39;s length is <code>1</code>, append the character to <code>s</code>.</li>
+	<li>Otherwise, append the character followed by the group&#39;s length.</li>
+</ul>
+
+<p>The compressed string <code>s</code> <strong>should not be returned separately</strong>, but instead, be stored <strong>in the input character array <code>chars</code></strong>. Note that group lengths that are <code>10</code> or longer will be split into multiple characters in <code>chars</code>.</p>
+
+<p>After you are done <strong>modifying the input array,</strong> return <em>the new length of the array</em>.</p>
+
+<p>You must write an algorithm that uses only constant extra space.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> chars = [&quot;a&quot;,&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;c&quot;,&quot;c&quot;,&quot;c&quot;]
+<strong>Output:</strong> Return 6, and the first 6 characters of the input array should be: [&quot;a&quot;,&quot;2&quot;,&quot;b&quot;,&quot;2&quot;,&quot;c&quot;,&quot;3&quot;]
+<strong>Explanation:</strong> The groups are &quot;aa&quot;, &quot;bb&quot;, and &quot;ccc&quot;. This compresses to &quot;a2b2c3&quot;.
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> chars = [&quot;a&quot;]
+<strong>Output:</strong> Return 1, and the first character of the input array should be: [&quot;a&quot;]
+<strong>Explanation:</strong> The only group is &quot;a&quot;, which remains uncompressed since it&#39;s a single character.
+</pre>
+
+<p><strong class="example">Example 3:</strong></p>
+
+<pre>
+<strong>Input:</strong> chars = [&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;]
+<strong>Output:</strong> Return 4, and the first 4 characters of the input array should be: [&quot;a&quot;,&quot;b&quot;,&quot;1&quot;,&quot;2&quot;].
+<strong>Explanation:</strong> The groups are &quot;a&quot; and &quot;bbbbbbbbbbbb&quot;. This compresses to &quot;ab12&quot;.</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>1 &lt;= chars.length &lt;= 2000</code></li>
+	<li><code>chars[i]</code> is a lowercase English letter, uppercase English letter, digit, or symbol.</li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<p>The idea is to use two pointers to keep track of how many times a character appears repeatedly.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">compress</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&amp;</span> <span class="n">chars</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">chars</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="p">;</span>
+            <span class="k">while</span><span class="p">(</span><span class="n">j</span><span class="o">&lt;</span><span class="n">n</span> <span class="o">&amp;&amp;</span> <span class="n">chars</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">==</span><span class="n">chars</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="n">j</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">chars</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">chars</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">i</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="n">ch</span><span class="o">:</span> <span class="n">to_string</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">i</span><span class="p">))</span> <span class="n">chars</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">ch</span><span class="p">);</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">chars</span> <span class="o">=</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">chars</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="p">,</span> <span class="n">chars</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+        <span class="k">return</span> <span class="n">chars</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+<h1 id="complexity">Complexity</h1>
+<ul>
+  <li>Time complexity: $O(n)$</li>
+  <li>Space complexity: $O(n)$</li>
+</ul>]]></content><author><name></name></author><category term="Two Pointers" /><category term="String" /><category term="C++" /><category term="Medium" /><summary type="html"><![CDATA[Problem Statement: Given an array of characters chars, compress it using the following algorithm:]]></summary></entry><entry><title type="html">Construct Quad Tree - 3 ways to do recursion, flyweight pattern</title><link href="http://localhost:4000/leetcode-solutions/2023/02/27/construct-quad-tree-3-ways-to-do-recursion,-flyweight-pattern.html" rel="alternate" type="text/html" title="Construct Quad Tree - 3 ways to do recursion, flyweight pattern" /><published>2023-02-27T00:00:00+00:00</published><updated>2023-02-27T00:00:00+00:00</updated><id>http://localhost:4000/leetcode-solutions/2023/02/27/construct%20quad%20tree-3%20ways%20to%20do%20recursion,%20flyweight%20pattern</id><content type="html" xml:base="http://localhost:4000/leetcode-solutions/2023/02/27/construct-quad-tree-3-ways-to-do-recursion,-flyweight-pattern.html"><![CDATA[<h1 id="problem-statement">Problem Statement:</h1>
+<p>Given a <code>n * n</code> matrix <code>grid</code> of <code>0&#39;s</code> and <code>1&#39;s</code> only. We want to represent the <code>grid</code> with a Quad-Tree.</p>
+
+<p>Return <em>the root of the Quad-Tree</em> representing the <code>grid</code>.</p>
+
+<p>Notice that you can assign the value of a node to <strong>True</strong> or <strong>False</strong> when <code>isLeaf</code> is <strong>False</strong>, and both are <strong>accepted</strong> in the answer.</p>
+
+<p>A Quad-Tree is a tree data structure in which each internal node has exactly four children. Besides, each node has two attributes:</p>
+
+<ul>
+	<li><code>val</code>: True if the node represents a grid of 1&#39;s or False if the node represents a grid of 0&#39;s.</li>
+	<li><code>isLeaf</code>: True if the node is leaf node on the tree or False if the node has the four children.</li>
+</ul>
+
+<pre>
+class Node {
+    public boolean val;
+    public boolean isLeaf;
+    public Node topLeft;
+    public Node topRight;
+    public Node bottomLeft;
+    public Node bottomRight;
+}</pre>
+
+<p>We can construct a Quad-Tree from a two-dimensional area using the following steps:</p>
+
+<ol>
+	<li>If the current grid has the same value (i.e all <code>1&#39;s</code> or all <code>0&#39;s</code>) set <code>isLeaf</code> True and set <code>val</code> to the value of the grid and set the four children to Null and stop.</li>
+	<li>If the current grid has different values, set <code>isLeaf</code> to False and set <code>val</code> to any value and divide the current grid into four sub-grids as shown in the photo.</li>
+	<li>Recurse for each of the children with the proper sub-grid.</li>
+</ol>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2020/02/11/new_top.png" style="width: 777px; height: 181px;" /></p>
+<p>If you want to know more about the Quad-Tree, you can refer to the <a href="https://en.wikipedia.org/wiki/Quadtree">wiki</a>.</p>
+
+<p><strong>Quad-Tree format:</strong></p>
+
+<p>The output represents the serialized format of a Quad-Tree using level order traversal, where <code>null</code> signifies a path terminator where no node exists below.</p>
+
+<p>It is very similar to the serialization of the binary tree. The only difference is that the node is represented as a list <code>[isLeaf, val]</code>.</p>
+
+<p>If the value of <code>isLeaf</code> or <code>val</code> is True we represent it as <strong>1</strong> in the list <code>[isLeaf, val]</code> and if the value of <code>isLeaf</code> or <code>val</code> is False we represent it as <strong>0</strong>.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2020/02/11/grid1.png" style="width: 777px; height: 99px;" /></p>
+<pre>
+<strong>Input:</strong> grid = [[0,1],[1,0]]
+<strong>Output:</strong> [[0,1],[1,0],[1,1],[1,1],[1,0]]
+<strong>Explanation:</strong> The explanation of this example is shown below:
+Notice that 0 represnts False and 1 represents True in the photo representing the Quad-Tree.
+<img alt="" src="https://assets.leetcode.com/uploads/2020/02/12/e1tree.png" style="width: 777px; height: 186px;" />
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<p><img alt="" src="https://assets.leetcode.com/uploads/2020/02/12/e2mat.png" style="width: 777px; height: 343px;" /></p>
+
+<pre>
+<strong>Input:</strong> grid = [[1,1,1,1,0,0,0,0],[1,1,1,1,0,0,0,0],[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,0],[1,1,1,1,0,0,0,0],[1,1,1,1,0,0,0,0],[1,1,1,1,0,0,0,0]]
+<strong>Output:</strong> [[0,1],[1,1],[0,1],[1,1],[1,0],null,null,null,null,[1,0],[1,0],[1,1],[1,1]]
+<strong>Explanation:</strong> All values in the grid are not the same. We divide the grid into four sub-grids.
+The topLeft, bottomLeft and bottomRight each has the same value.
+The topRight have different values so we divide it into 4 sub-grids where each has the same value.
+Explanation is shown in the photo below:
+<img alt="" src="https://assets.leetcode.com/uploads/2020/02/12/e2tree.png" style="width: 777px; height: 328px;" />
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>n == grid.length == grid[i].length</code></li>
+	<li><code>n == 2<sup>x</sup></code> where <code>0 &lt;= x &lt;= 6</code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<h2 id="recursion---i">Recursion - I</h2>
+<p>We use a <code class="language-plaintext highlighter-rouge">test</code> function to see if a grid is a leaf node or not and if not, we recurse into 4 sub-grids.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="kt">int</span> <span class="nf">test</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span><span class="n">grid</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">grid</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="n">row</span><span class="o">:</span><span class="n">grid</span><span class="p">)</span><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">:</span><span class="n">row</span><span class="p">)</span><span class="n">s</span><span class="o">+=</span><span class="n">k</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="o">==</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="p">))</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">construct</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">grid</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">test</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">test</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">grid</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">tl</span><span class="p">,</span> <span class="n">tr</span><span class="p">,</span> <span class="n">bl</span><span class="p">,</span> <span class="n">br</span><span class="p">;</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">top</span><span class="p">(</span><span class="n">grid</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">grid</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">bot</span><span class="p">(</span><span class="n">grid</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>  <span class="n">grid</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="n">vec</span><span class="o">:</span> <span class="n">top</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">tl</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">));</span>
+            <span class="n">tr</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>   <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">()));</span>
+        <span class="p">}</span>        
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="n">vec</span><span class="o">:</span> <span class="n">bot</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">bl</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">));</span>
+            <span class="n">br</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>   <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">()));</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">construct</span><span class="p">(</span><span class="n">tl</span><span class="p">),</span> <span class="n">construct</span><span class="p">(</span><span class="n">tr</span><span class="p">),</span> \
+            <span class="n">construct</span><span class="p">(</span><span class="n">bl</span><span class="p">),</span> <span class="n">construct</span><span class="p">(</span><span class="n">br</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+<h2 id="recusion---ii">Recusion - II</h2>
+<p>We don”t actually need a <code class="language-plaintext highlighter-rouge">test</code> function because a helper function can do that that job while recursing.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">construct</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">grid</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">helper</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">grid</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">Node</span> <span class="o">*</span><span class="nf">helper</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span><span class="n">grid</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">],</span> <span class="nb">true</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">tl</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">tr</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">bl</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">br</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">tl</span><span class="o">-&gt;</span><span class="n">isLeaf</span> <span class="o">&amp;&amp;</span> <span class="n">tr</span><span class="o">-&gt;</span><span class="n">isLeaf</span> <span class="o">&amp;&amp;</span> <span class="n">bl</span><span class="o">-&gt;</span><span class="n">isLeaf</span> <span class="o">&amp;&amp;</span> <span class="n">br</span><span class="o">-&gt;</span><span class="n">isLeaf</span> <span class="o">&amp;&amp;</span> \
+            <span class="n">tl</span><span class="o">-&gt;</span><span class="n">val</span><span class="o">==</span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">&amp;&amp;</span> <span class="n">tl</span><span class="o">-&gt;</span><span class="n">val</span><span class="o">==</span><span class="n">bl</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">&amp;&amp;</span> <span class="n">tl</span><span class="o">-&gt;</span><span class="n">val</span><span class="o">==</span><span class="n">br</span><span class="o">-&gt;</span><span class="n">val</span>
+           <span class="p">)</span> <span class="k">return</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">tl</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">],</span> <span class="nb">false</span><span class="p">,</span> <span class="n">tl</span><span class="p">,</span> <span class="n">tr</span><span class="p">,</span> <span class="n">bl</span><span class="p">,</span> <span class="n">br</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+<h2 id="recusion---iii-flyweight-pattern">Recusion - III (FLyweight pattern)</h2>
+<p>We can take advantage of the fact that there are fixed number of unique values in the grid: 2.
+So, we can pre-construct a <code class="language-plaintext highlighter-rouge">leaves</code> array and reference leaf nodes from here. Notice also that <code class="language-plaintext highlighter-rouge">Node</code> object does not keep track of the size of grid. We can use this fact to create leaf nodes representing larger grids with the same pre-computed <code class="language-plaintext highlighter-rouge">leaves</code> array.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">Node</span> <span class="o">*&gt;</span> <span class="n">leaves</span> <span class="o">=</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Node</span> <span class="o">*&gt;</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">construct</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">grid</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="n">leaves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span><span class="nb">true</span><span class="p">);</span>
+        <span class="n">leaves</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">helper</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">grid</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">Node</span> <span class="o">*</span><span class="nf">helper</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span><span class="n">grid</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="n">leaves</span><span class="p">[</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]];</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">tl</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">tr</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">bl</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">br</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">grid</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">tl</span><span class="o">==</span><span class="n">tr</span> <span class="o">&amp;&amp;</span> <span class="n">tl</span><span class="o">==</span><span class="n">bl</span> <span class="o">&amp;&amp;</span> <span class="n">tl</span><span class="o">==</span><span class="n">br</span><span class="p">)</span> <span class="k">return</span> <span class="n">tl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">],</span> <span class="nb">false</span><span class="p">,</span> <span class="n">tl</span><span class="p">,</span> <span class="n">tr</span><span class="p">,</span> <span class="n">bl</span><span class="p">,</span> <span class="n">br</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+ </code></pre></figure>
+
+<p>The 3rd solution is inspired from <a href="https://leetcode.com/problems/construct-quad-tree/solutions/314379/c-flyweight-pattern-overwhelmingly-beats-100-time-and-memory/?q=fly&amp;orderBy=most_relevant">here</a> and is called “Flyweight Pattern” because entire tree is constructed using 2 <code class="language-plaintext highlighter-rouge">Node</code> objects stored in <code class="language-plaintext highlighter-rouge">leaves</code>.</p>]]></content><author><name></name></author><category term="Array" /><category term="Divide and Conquer" /><category term="Tree" /><category term="Matrix" /><category term="C++" /><category term="Recursion" /><category term="Medium" /><summary type="html"><![CDATA[Problem Statement: Given a n * n matrix grid of 0&#39;s and 1&#39;s only. We want to represent the grid with a Quad-Tree.]]></summary></entry><entry><title type="html">4Sum - K Sum solution explained</title><link href="http://localhost:4000/leetcode-solutions/2023/02/22/4sum-k-sum-solution-explained.html" rel="alternate" type="text/html" title="4Sum - K Sum solution explained" /><published>2023-02-22T00:00:00+00:00</published><updated>2023-02-22T00:00:00+00:00</updated><id>http://localhost:4000/leetcode-solutions/2023/02/22/4sum-k%20sum%20solution%20explained</id><content type="html" xml:base="http://localhost:4000/leetcode-solutions/2023/02/22/4sum-k-sum-solution-explained.html"><![CDATA[<h1 id="problem-statement">Problem Statement:</h1>
+<p>Given an array <code>nums</code> of <code>n</code> integers, return <em>an array of all the <strong>unique</strong> quadruplets</em> <code>[nums[a], nums[b], nums[c], nums[d]]</code> such that:</p>
+
+<ul>
+	<li><code>0 &lt;= a, b, c, d&nbsp;&lt; n</code></li>
+	<li><code>a</code>, <code>b</code>, <code>c</code>, and <code>d</code> are <strong>distinct</strong>.</li>
+	<li><code>nums[a] + nums[b] + nums[c] + nums[d] == target</code></li>
+</ul>
+
+<p>You may return the answer in <strong>any order</strong>.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> nums = [1,0,-1,0,-2,2], target = 0
+<strong>Output:</strong> [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> nums = [2,2,2,2,2], target = 8
+<strong>Output:</strong> [[2,2,2,2]]
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>1 &lt;= nums.length &lt;= 200</code></li>
+	<li><code>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>
+	<li><code>-10<sup>9</sup> &lt;= target &lt;= 10<sup>9</sup></code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<h1 id="explanation">Explanation</h1>
+<p>We will generalize 2-sum to K-Sum.</p>
+
+<h2 id="revision-of-2-sum">Revision of 2 Sum</h2>
+<p>There are two main ways to solve 2 Sum in $O(n)$ time. Let us look at both. We will not look at finding whether two sum exists but return all such pairs (with repitition if repititions are present). For the 2nd method, let us assume that the array was given to us in sorted order. We will talk about this assumption later.</p>
+
+<h3 id="2-sum-using-hashset-on-time-on-space">2 Sum using HashSet: $O(n)$ time, $O(n)$ space</h3>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">twoSum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="n">nums</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">res</span><span class="p">;</span>
+    <span class="n">unordered_set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">complements</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">:</span> <span class="n">nums</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">complements</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="n">vec</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="n">target</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">target</span><span class="p">});</span>
+        <span class="n">complements</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">target</span><span class="o">-</span><span class="n">n</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+ </code></pre></figure>
+
+<h3 id="2-sum-using-double-pointer-on-time-o1-space">2 Sum using double pointer: $O(n)$ time, $O(1)$ space</h3>
+<p><strong>Note:</strong> We had assumed <code class="language-plaintext highlighter-rouge">nums</code> to be pre-sorted.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">twoSum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="n">nums</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">res</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">lo</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">lo</span><span class="o">&lt;</span><span class="n">hi</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">lo</span><span class="p">]</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">hi</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">cur</span><span class="o">==</span><span class="n">target</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">res</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="n">nums</span><span class="p">[</span><span class="n">lo</span><span class="p">],</span><span class="n">nums</span><span class="p">[</span><span class="n">hi</span><span class="p">]});</span>
+            <span class="n">lo</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">hi</span><span class="o">--</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">cur</span><span class="o">&lt;</span><span class="n">target</span><span class="p">)</span> <span class="n">lo</span><span class="o">++</span><span class="p">;</span>
+        <span class="k">else</span> <span class="n">hi</span><span class="o">--</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+ </code></pre></figure>
+
+<p>Now to generalize this to K-Sum we can have a recursive function such that <code class="language-plaintext highlighter-rouge">KSum</code> for <code class="language-plaintext highlighter-rouge">K</code> will be created using <code class="language-plaintext highlighter-rouge">KSum</code> for <code class="language-plaintext highlighter-rouge">K-1</code>. When we reach <code class="language-plaintext highlighter-rouge">K=2</code> we will use the <code class="language-plaintext highlighter-rouge">twoSum</code> that we have written earlier.</p>
+
+<p>Now the crucial thing to note is that for <code class="language-plaintext highlighter-rouge">K=3,4,5,...</code> we will always have a situation where <code class="language-plaintext highlighter-rouge">TC</code> is at least $O(n^2)$, hence it makes sense to pre-sort array in $O(n\log(n))$ time and use the 2nd method. It also helps in keeping track of unique subsets because otherwise we will have to sort the subset each time before adding to <code class="language-plaintext highlighter-rouge">res</code>.</p>
+
+<h1 id="code">Code</h1>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="cp">#define ll long long
+</span><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">fourSum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="n">sort</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+        <span class="k">return</span> <span class="n">KSum</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">KSum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">nums</span><span class="p">,</span> <span class="n">ll</span> <span class="n">target</span><span class="p">,</span> \
+                             <span class="kt">int</span> <span class="n">K</span><span class="p">,</span> <span class="kt">int</span> <span class="n">start</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">start</span><span class="o">&gt;=</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="k">return</span> <span class="p">{};</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">target</span><span class="o">&lt;</span><span class="p">(</span><span class="n">ll</span><span class="p">)</span><span class="n">nums</span><span class="p">[</span><span class="n">start</span><span class="p">]</span><span class="o">*</span><span class="n">K</span> <span class="o">||</span> <span class="n">target</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ll</span><span class="p">)</span><span class="n">nums</span><span class="p">.</span><span class="n">back</span><span class="p">()</span><span class="o">*</span><span class="n">K</span><span class="p">)</span> <span class="k">return</span> <span class="p">{};</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">K</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span> <span class="k">return</span> <span class="nf">twoSum</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">start</span><span class="p">);</span>
+        <span class="n">set</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">res</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">start</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">kSumPrev</span> <span class="o">=</span> <span class="n">KSum</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">target</span><span class="o">-</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+            <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">subset</span><span class="o">:</span> <span class="n">kSumPrev</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">subset</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                <span class="n">res</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">subset</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">res</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">res</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">twoSum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">nums</span><span class="p">,</span> <span class="n">ll</span> <span class="n">target</span><span class="p">,</span> <span class="kt">int</span> <span class="n">start</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">res</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">lo</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">lo</span><span class="o">&lt;</span><span class="n">hi</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">ll</span> <span class="n">cur</span> <span class="o">=</span> <span class="p">(</span><span class="n">ll</span><span class="p">)</span><span class="n">nums</span><span class="p">[</span><span class="n">lo</span><span class="p">]</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">hi</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">cur</span><span class="o">==</span><span class="n">target</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">res</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="n">nums</span><span class="p">[</span><span class="n">lo</span><span class="p">],</span><span class="n">nums</span><span class="p">[</span><span class="n">hi</span><span class="p">]});</span>
+                <span class="n">lo</span><span class="o">++</span><span class="p">;</span>
+                <span class="n">hi</span><span class="o">--</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">cur</span><span class="o">&lt;</span><span class="n">target</span><span class="p">)</span> <span class="n">lo</span><span class="o">++</span><span class="p">;</span>
+            <span class="k">else</span> <span class="n">hi</span><span class="o">--</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+<h1 id="complexity">Complexity</h1>
+<p><code class="language-plaintext highlighter-rouge">TC</code>: $O(n^3)$
+<code class="language-plaintext highlighter-rouge">SC</code>: $O(n)$</p>]]></content><author><name></name></author><category term="Array" /><category term="Two Pointers" /><category term="Sorting" /><category term="C++" /><category term="Medium" /><summary type="html"><![CDATA[Problem Statement: Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:]]></summary></entry><entry><title type="html">Capacity To Ship Packages Within D Days - Binary search with proper explanation</title><link href="http://localhost:4000/leetcode-solutions/2023/02/22/capacity-to-ship-packages-within-d-days-binary-search-with-proper-explanation.html" rel="alternate" type="text/html" title="Capacity To Ship Packages Within D Days - Binary search with proper explanation" /><published>2023-02-22T00:00:00+00:00</published><updated>2023-02-22T00:00:00+00:00</updated><id>http://localhost:4000/leetcode-solutions/2023/02/22/capacity%20to%20ship%20packages%20within%20d%20days-binary%20search%20with%20proper%20explanation</id><content type="html" xml:base="http://localhost:4000/leetcode-solutions/2023/02/22/capacity-to-ship-packages-within-d-days-binary-search-with-proper-explanation.html"><![CDATA[<h1 id="problem-statement">Problem Statement:</h1>
+<p>A conveyor belt has packages that must be shipped from one port to another within <code>days</code> days.</p>
+
+<p>The <code>i<sup>th</sup></code> package on the conveyor belt has a weight of <code>weights[i]</code>. Each day, we load the ship with packages on the conveyor belt (in the order given by <code>weights</code>). We may not load more weight than the maximum weight capacity of the ship.</p>
+
+<p>Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being shipped within <code>days</code> days.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> weights = [1,2,3,4,5,6,7,8,9,10], days = 5
+<strong>Output:</strong> 15
+<strong>Explanation:</strong> A ship capacity of 15 is the minimum to ship all the packages in 5 days like this:
+1st day: 1, 2, 3, 4, 5
+2nd day: 6, 7
+3rd day: 8
+4th day: 9
+5th day: 10
+
+Note that the cargo must be shipped in the order given, so using a ship of capacity 14 and splitting the packages into parts like (2, 3, 4, 5), (1, 6, 7), (8), (9), (10) is not allowed.
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> weights = [3,2,2,4,1,4], days = 3
+<strong>Output:</strong> 6
+<strong>Explanation:</strong> A ship capacity of 6 is the minimum to ship all the packages in 3 days like this:
+1st day: 3, 2
+2nd day: 2, 4
+3rd day: 1, 4
+</pre>
+
+<p><strong class="example">Example 3:</strong></p>
+
+<pre>
+<strong>Input:</strong> weights = [1,2,3,1,1], days = 4
+<strong>Output:</strong> 3
+<strong>Explanation:</strong>
+1st day: 1
+2nd day: 2
+3rd day: 3
+4th day: 1, 1
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>1 &lt;= days &lt;= weights.length &lt;= 5 * 10<sup>4</sup></code></li>
+	<li><code>1 &lt;= weights[i] &lt;= 500</code></li>
+</ul>
+<h1 id="solution">Solution:</h1>
+<h1 id="intuition">Intuition</h1>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>We need to find the minimum possible capacity that will work. So, we can think of the problem as a search problem with a test of whether it will work at a given capacity. If we want to find the answer in a range <code class="language-plaintext highlighter-rouge">[0,M]</code> then we can apply the test at <code class="language-plaintext highlighter-rouge">M/2</code> and if it works then we recurse in the lower half and if it does not work then we recurse in the upper half. In this way we can come up with a binary search.</p>
+
+<h1 id="approach">Approach</h1>
+<!-- Describe your approach to solving the problem. -->
+<p>To create the test described above we need to write a function <code class="language-plaintext highlighter-rouge">bool possible(int capacity, int days, vector&lt;int&gt;&amp;weights)</code> which will return <code class="language-plaintext highlighter-rouge">true</code> if it is possible and <code class="language-plaintext highlighter-rouge">false</code> if it is not possible to work with <code class="language-plaintext highlighter-rouge">capacity</code>. We will use this for binary search as described previously.</p>
+
+<h1 id="code">Code</h1>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">bool</span> <span class="n">possible</span><span class="p">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="p">,</span> <span class="kt">int</span> <span class="n">days</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">weights</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">weights</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ctr</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="n">capacity</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span> <span class="o">&amp;&amp;</span> <span class="n">cur</span><span class="o">+</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;=</span><span class="n">capacity</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">cur</span> <span class="o">+=</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+                <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">ctr</span> <span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">ctr</span><span class="o">&lt;=</span><span class="n">days</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="nf">shipWithinDays</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">weights</span><span class="p">,</span> <span class="kt">int</span> <span class="n">days</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">lo</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="n">INT_MAX</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">lo</span><span class="o">&lt;=</span><span class="n">hi</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">lo</span> <span class="o">+</span> <span class="p">(</span><span class="n">hi</span><span class="o">-</span><span class="n">lo</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">possible</span><span class="p">(</span><span class="n">mid</span><span class="p">,</span> <span class="n">days</span><span class="p">,</span> <span class="n">weights</span><span class="p">))</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+            <span class="k">else</span> <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">lo</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+<h1 id="complexity">Complexity</h1>
+<ul>
+  <li>
+    <p>Time complexity: $O(n \log(M))$ where $M$ is the maximum possible value of <code class="language-plaintext highlighter-rouge">capacity</code>. It can be the maximum value of <code class="language-plaintext highlighter-rouge">weights</code> array but in our implementation we have taken it to be <code class="language-plaintext highlighter-rouge">INT_MAX</code> since the difference is trivial anyway (in log scale).
+<!-- Add your time complexity here, e.g. $$O(n)$$ --></p>
+  </li>
+  <li>
+    <p>Space complexity: $O(1)$
+<!-- Add your space complexity here, e.g. $$O(n)$$ --></p>
+  </li>
+</ul>]]></content><author><name></name></author><category term="Array" /><category term="Binary Search" /><category term="C++" /><category term="Medium" /><summary type="html"><![CDATA[Problem Statement: A conveyor belt has packages that must be shipped from one port to another within days days. The ith package on the conveyor belt has a weight of weights[i]. Each day, we load the ship with packages on the conveyor belt (in the order given by weights). We may not load more weight than the maximum weight capacity of the ship. Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being shipped within days days. &nbsp; Example 1: Input: weights = [1,2,3,4,5,6,7,8,9,10], days = 5 Output: 15 Explanation: A ship capacity of 15 is the minimum to ship all the packages in 5 days like this: 1st day: 1, 2, 3, 4, 5 2nd day: 6, 7 3rd day: 8 4th day: 9 5th day: 10 Note that the cargo must be shipped in the order given, so using a ship of capacity 14 and splitting the packages into parts like (2, 3, 4, 5), (1, 6, 7), (8), (9), (10) is not allowed. Example 2: Input: weights = [3,2,2,4,1,4], days = 3 Output: 6 Explanation: A ship capacity of 6 is the minimum to ship all the packages in 3 days like this: 1st day: 3, 2 2nd day: 2, 4 3rd day: 1, 4 Example 3: Input: weights = [1,2,3,1,1], days = 4 Output: 3 Explanation: 1st day: 1 2nd day: 2 3rd day: 3 4th day: 1, 1 &nbsp; Constraints: 1 &lt;= days &lt;= weights.length &lt;= 5 * 104 1 &lt;= weights[i] &lt;= 500 Solution: Intuition We need to find the minimum possible capacity that will work. So, we can think of the problem as a search problem with a test of whether it will work at a given capacity. If we want to find the answer in a range [0,M] then we can apply the test at M/2 and if it works then we recurse in the lower half and if it does not work then we recurse in the upper half. In this way we can come up with a binary search.]]></summary></entry><entry><title type="html">Minimum Impossible OR - First missing positive + Bit manipulation [Easy to understand]</title><link href="http://localhost:4000/leetcode-solutions/2023/02/22/minimum-impossible-or-first-missing-positive-+-bit-manipulation-easy-to-understand.html" rel="alternate" type="text/html" title="Minimum Impossible OR - First missing positive + Bit manipulation [Easy to understand]" /><published>2023-02-22T00:00:00+00:00</published><updated>2023-02-22T00:00:00+00:00</updated><id>http://localhost:4000/leetcode-solutions/2023/02/22/minimum%20impossible%20or-first%20missing%20positive%20+%20bit%20manipulation%20%5Beasy%20to%20understand%5D</id><content type="html" xml:base="http://localhost:4000/leetcode-solutions/2023/02/22/minimum-impossible-or-first-missing-positive-+-bit-manipulation-easy-to-understand.html"><![CDATA[<h1 id="problem-statement">Problem Statement:</h1>
+<p>You are given a <strong>0-indexed</strong>&nbsp;integer array <code>nums</code>.</p>
+
+<p>We say that an integer x is <strong>expressible</strong> from <code>nums</code> if there exist some integers <code>0 &lt;= index<sub>1</sub> &lt; index<sub>2</sub> &lt; ... &lt; index<sub>k</sub> &lt; nums.length</code> for which <code>nums[index<sub>1</sub>] | nums[index<sub>2</sub>] | ... | nums[index<sub>k</sub>] = x</code>. In other words, an integer is expressible if it can be written as the bitwise OR of some subsequence of <code>nums</code>.</p>
+
+<p>Return <em>the minimum <strong>positive non-zero integer</strong>&nbsp;that is not </em><em>expressible from </em><code>nums</code>.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> nums = [2,1]
+<strong>Output:</strong> 4
+<strong>Explanation:</strong> 1 and 2 are already present in the array. We know that 3 is expressible, since nums[0] | nums[1] = 2 | 1 = 3. Since 4 is not expressible, we return 4.
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> nums = [5,3,2]
+<strong>Output:</strong> 1
+<strong>Explanation:</strong> We can show that 1 is the smallest number that is not expressible.
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>
+	<li><code>1 &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<h1 id="intuition">Intuition</h1>
+<p>This problem seems similar to <a href="https://leetcode.com/problems/first-missing-positive/">First Missing Positive</a>. Here is a solution to that probelm:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="kt">int</span> <span class="nf">firstMissingPositive</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">unordered_set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">numSet</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">()){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">numSet</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+        <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+ </code></pre></figure>
+
+<h1 id="observation">Observation</h1>
+<p>Our solution is similar to the above in spirit. The crucial thing to notice is that if we have just powers of 2, we can construct all numbers upto the next power of 2 by their OR.</p>
+
+<p>For example, given the array <code class="language-plaintext highlighter-rouge">[1,2,4,8,16]</code>, we can do <code class="language-plaintext highlighter-rouge">OR</code> between various elements to construct all numbers from 1 to 31. So the presence of other numbers in the middle like 3,5,6 etc. does not change the range of possible numbers. Hence these are the only ones that need to be checked.</p>
+
+<h1 id="code">Code</h1>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">minImpossibleOR</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="n">unordered_set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">numSet</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+        <span class="kt">int</span> <span class="n">cur</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">cur</span><span class="o">&lt;</span><span class="n">INT_MAX</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">numSet</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">cur</span><span class="p">))</span> <span class="k">return</span> <span class="n">cur</span><span class="p">;</span>
+            <span class="n">cur</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">INT_MAX</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>]]></content><author><name></name></author><category term="C++" /><category term="Medium" /><summary type="html"><![CDATA[Problem Statement: You are given a 0-indexed&nbsp;integer array nums.]]></summary></entry><entry><title type="html">Count the Number of Square-Free Subsets - No DFS, No DP, Just Bitmask + simple counting</title><link href="http://localhost:4000/leetcode-solutions/2023/02/21/count-the-number-of-square-free-subsets-no-dfs,-no-dp,-just-bitmask-+-simple-counting.html" rel="alternate" type="text/html" title="Count the Number of Square-Free Subsets - No DFS, No DP, Just Bitmask + simple counting" /><published>2023-02-21T00:00:00+00:00</published><updated>2023-02-21T00:00:00+00:00</updated><id>http://localhost:4000/leetcode-solutions/2023/02/21/count%20the%20number%20of%20square-free%20subsets-no%20dfs,%20no%20dp,%20just%20bitmask%20+%20simple%20counting</id><content type="html" xml:base="http://localhost:4000/leetcode-solutions/2023/02/21/count-the-number-of-square-free-subsets-no-dfs,-no-dp,-just-bitmask-+-simple-counting.html"><![CDATA[<h1 id="problem-statement">Problem Statement:</h1>
+<p>You are given a positive integer <strong>0-indexed</strong>&nbsp;array <code>nums</code>.</p>
+
+<p>A subset of the array <code>nums</code> is <strong>square-free</strong> if the product of its elements is a <strong>square-free integer</strong>.</p>
+
+<p>A <strong>square-free integer</strong> is an integer that is divisible by no square number other than <code>1</code>.</p>
+
+<p>Return <em>the number of square-free non-empty subsets of the array</em> <strong>nums</strong>. Since the answer may be too large, return it <strong>modulo</strong> <code>10<sup>9</sup> + 7</code>.</p>
+
+<p>A <strong>non-empty</strong>&nbsp;<strong>subset</strong> of <code>nums</code> is an array that can be obtained by deleting some (possibly none but not all) elements from <code>nums</code>. Two subsets are different if and only if the chosen indices to delete are different.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> nums = [3,4,4,5]
+<strong>Output:</strong> 3
+<strong>Explanation:</strong> There are 3 square-free subsets in this example:
+- The subset consisting of the 0<sup>th</sup> element [3]. The product of its elements is 3, which is a square-free integer.
+- The subset consisting of the 3<sup>rd</sup> element [5]. The product of its elements is 5, which is a square-free integer.
+- The subset consisting of 0<sup>th</sup> and 3<sup>rd</sup> elements [3,5]. The product of its elements is 15, which is a square-free integer.
+It can be proven that there are no more than 3 square-free subsets in the given array.</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> nums = [1]
+<strong>Output:</strong> 1
+<strong>Explanation:</strong> There is 1 square-free subset in this example:
+- The subset consisting of the 0<sup>th</sup> element [1]. The product of its elements is 1, which is a square-free integer.
+It can be proven that there is no more than 1 square-free subset in the given array.
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>1 &lt;= nums.length&nbsp;&lt;= 1000</code></li>
+	<li><code>1 &lt;= nums[i] &lt;= 30</code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<p>We just count all valid bitmasks.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">mod</span> <span class="o">=</span> <span class="mi">1000000007</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">primes</span> <span class="o">=</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">19</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">29</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="nf">getMask</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">mask</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">primes</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="n">n</span><span class="o">%</span><span class="n">primes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">n</span> <span class="o">/=</span> <span class="n">primes</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+                <span class="n">ctr</span> <span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ctr</span><span class="o">&gt;=</span><span class="mi">2</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">ctr</span><span class="p">)</span> <span class="n">mask</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">mask</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="nf">squareFreeSubsets</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">long</span> <span class="kt">long</span><span class="p">,</span><span class="kt">long</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">H</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">:</span> <span class="n">nums</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">long</span> <span class="kt">long</span><span class="p">,</span><span class="kt">long</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">Hcopy</span> <span class="o">=</span> <span class="n">H</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">getMask</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">mask</span><span class="o">==-</span><span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">]</span><span class="o">:</span> <span class="n">Hcopy</span><span class="p">)</span> <span class="k">if</span> <span class="p">((</span><span class="n">k</span> <span class="o">&amp;</span> <span class="n">mask</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="n">H</span><span class="p">[</span> <span class="p">(</span><span class="n">k</span><span class="o">|</span><span class="n">mask</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span><span class="p">[</span><span class="n">k</span><span class="o">|</span><span class="n">mask</span><span class="p">]</span><span class="o">%</span><span class="n">mod</span> <span class="o">+</span> <span class="n">v</span><span class="o">%</span><span class="n">mod</span><span class="p">)</span><span class="o">%</span><span class="n">mod</span><span class="p">;</span>
+            <span class="n">H</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">long</span> <span class="kt">long</span> <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">]</span><span class="o">:</span> <span class="n">H</span><span class="p">)</span> <span class="n">res</span> <span class="o">+=</span> <span class="n">v</span><span class="p">;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kt">int</span><span class="p">)(</span><span class="n">res</span><span class="o">%</span><span class="n">mod</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>]]></content><author><name></name></author><category term="C++" /><category term="Bitmask" /><category term="Medium" /><summary type="html"><![CDATA[Problem Statement: You are given a positive integer 0-indexed&nbsp;array nums.]]></summary></entry><entry><title type="html">Put Marbles in Bags - 2 Heap solution with explaination</title><link href="http://localhost:4000/leetcode-solutions/2023/02/17/put-marbles-in-bags-2-heap-solution-with-explaination.html" rel="alternate" type="text/html" title="Put Marbles in Bags - 2 Heap solution with explaination" /><published>2023-02-17T00:00:00+00:00</published><updated>2023-02-17T00:00:00+00:00</updated><id>http://localhost:4000/leetcode-solutions/2023/02/17/put%20marbles%20in%20bags-2%20heap%20solution%20with%20explaination</id><content type="html" xml:base="http://localhost:4000/leetcode-solutions/2023/02/17/put-marbles-in-bags-2-heap-solution-with-explaination.html"><![CDATA[<h1 id="problem-statement">Problem Statement:</h1>
+<p>You have <code>k</code> bags. You are given a <strong>0-indexed</strong> integer array <code>weights</code> where <code>weights[i]</code> is the weight of the <code>i<sup>th</sup></code> marble. You are also given the integer <code>k.</code></p>
+
+<p>Divide the marbles into the <code>k</code> bags according to the following rules:</p>
+
+<ul>
+	<li>No bag is empty.</li>
+	<li>If the <code>i<sup>th</sup></code> marble and <code>j<sup>th</sup></code> marble are in a bag, then all marbles with an index between the <code>i<sup>th</sup></code> and <code>j<sup>th</sup></code> indices should also be in that same bag.</li>
+	<li>If a bag consists of all the marbles with an index from <code>i</code> to <code>j</code> inclusively, then the cost of the bag is <code>weights[i] + weights[j]</code>.</li>
+</ul>
+
+<p>The <strong>score</strong> after distributing the marbles is the sum of the costs of all the <code>k</code> bags.</p>
+
+<p>Return <em>the <strong>difference</strong> between the <strong>maximum</strong> and <strong>minimum</strong> scores among marble distributions</em>.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> weights = [1,3,5,1], k = 2
+<strong>Output:</strong> 4
+<strong>Explanation:</strong> 
+The distribution [1],[3,5,1] results in the minimal score of (1+1) + (3+1) = 6. 
+The distribution [1,3],[5,1], results in the maximal score of (1+3) + (5+1) = 10. 
+Thus, we return their difference 10 - 6 = 4.
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> weights = [1, 3], k = 2
+<strong>Output:</strong> 0
+<strong>Explanation:</strong> The only distribution possible is [1],[3]. 
+Since both the maximal and minimal score are the same, we return 0.
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>1 &lt;= k &lt;= weights.length &lt;= 10<sup>5</sup></code></li>
+	<li><code>1 &lt;= weights[i] &lt;= 10<sup>9</sup></code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<p>The question amounts to putting up <code class="language-plaintext highlighter-rouge">K-1</code> walls inside the <code class="language-plaintext highlighter-rouge">weights</code> array. The score is the sum of all the adjacent members of walls plus <code class="language-plaintext highlighter-rouge">weights[0]+weights[n-1]</code>.
+For example consider the input <code class="language-plaintext highlighter-rouge">weights = [a,b,c,d,e,f,g,h,i], K=3</code> and if we put up walls like this: <code class="language-plaintext highlighter-rouge">a b c | d e f g |  h i</code>  then the score is <code class="language-plaintext highlighter-rouge">(a+c) + (d+g) + (h+i)</code> which can also be written as <code class="language-plaintext highlighter-rouge">(a+i) + (c+d) + (g+h)</code>.</p>
+
+<p>Now we want to find the difference between minimum and maximum scores. Notice that the first and last elements will always be part of any score. So, we need not consider them to calculate the difference. We can use a max-heap and a min-heap to store the sum of all adjacent pairs. In our example, this will be <code class="language-plaintext highlighter-rouge">a+b, b+c, c+d, d+e, e+f, f+g, g+h, h+i</code>. Once we have constructed both the heaps, the maximum score is the sum of <code class="language-plaintext highlighter-rouge">K-1</code> largest numbers from max heap and the minimum score is the sum of <code class="language-plaintext highlighter-rouge">K-1</code> smallest numbers from the min heap (plus the first and last, but we are ignoring them because they occur in both). Their difference gives us the answer.</p>
+
+<h1 id="code">Code</h1>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">long</span> <span class="kt">long</span> <span class="n">putMarbles</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">weights</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">weights</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">cur</span><span class="o">=</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="o">==</span><span class="mi">1</span> <span class="o">||</span> <span class="n">n</span><span class="o">==</span><span class="n">k</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">priority_queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">max_pq</span><span class="p">;</span>
+        <span class="n">priority_queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">greater</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">min_pq</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">&gt;=</span><span class="mi">2</span><span class="p">)</span> <span class="n">cur</span> <span class="o">-=</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">];</span>
+            <span class="n">cur</span> <span class="o">+=</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="n">max_pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">cur</span><span class="p">);</span>
+            <span class="n">min_pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">cur</span><span class="p">);</span>
+
+        <span class="p">}</span>
+        <span class="kt">long</span> <span class="kt">long</span> <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">max_pq</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+            <span class="n">res</span> <span class="o">-=</span> <span class="n">min_pq</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+            <span class="n">max_pq</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+            <span class="n">min_pq</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+<h1 id="complexity">Complexity</h1>
+<p>TC: $O(n + k\log(n))$, SC: $O(n)$</p>
+
+<p>If you like this post, please upvote it!</p>]]></content><author><name></name></author><category term="Array" /><category term="Greedy" /><category term="Sorting" /><category term="Heap (Priority Queue)" /><category term="C++" /><category term="Hard" /><summary type="html"><![CDATA[Problem Statement: You have k bags. You are given a 0-indexed integer array weights where weights[i] is the weight of the ith marble. You are also given the integer k.]]></summary></entry><entry><title type="html">Substring XOR Queries - Clean HashMap solution</title><link href="http://localhost:4000/leetcode-solutions/2023/02/13/substring-xor-queries-clean-hashmap-solution.html" rel="alternate" type="text/html" title="Substring XOR Queries - Clean HashMap solution" /><published>2023-02-13T00:00:00+00:00</published><updated>2023-02-13T00:00:00+00:00</updated><id>http://localhost:4000/leetcode-solutions/2023/02/13/substring%20xor%20queries-clean%20hashmap%20solution</id><content type="html" xml:base="http://localhost:4000/leetcode-solutions/2023/02/13/substring-xor-queries-clean-hashmap-solution.html"><![CDATA[<h1 id="problem-statement">Problem Statement:</h1>
+<p>You are given a <strong>binary string</strong> <code>s</code>, and a <strong>2D</strong> integer array <code>queries</code> where <code>queries[i] = [first<sub>i</sub>, second<sub>i</sub>]</code>.</p>
+
+<p>For the <code>i<sup>th</sup></code> query, find the <strong>shortest substring</strong> of <code>s</code> whose <strong>decimal value</strong>, <code>val</code>, yields <code>second<sub>i</sub></code> when <strong>bitwise XORed</strong> with <code>first<sub>i</sub></code>. In other words, <code>val ^ first<sub>i</sub> == second<sub>i</sub></code>.</p>
+
+<p>The answer to the <code>i<sup>th</sup></code> query is the endpoints (<strong>0-indexed</strong>) of the substring <code>[left<sub>i</sub>, right<sub>i</sub>]</code> or <code>[-1, -1]</code> if no such substring exists. If there are multiple answers, choose the one with the <strong>minimum</strong> <code>left<sub>i</sub></code>.</p>
+
+<p><em>Return an array</em> <code>ans</code> <em>where</em> <code>ans[i] = [left<sub>i</sub>, right<sub>i</sub>]</code> <em>is the answer to the</em> <code>i<sup>th</sup></code> <em>query.</em></p>
+
+<p>A <strong>substring</strong> is a contiguous non-empty sequence of characters within a string.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> s = &quot;101101&quot;, queries = [[0,5],[1,2]]
+<strong>Output:</strong> [[0,2],[2,3]]
+<strong>Explanation:</strong> For the first query the substring in range <code>[0,2]</code> is <strong>&quot;101&quot;</strong> which has a decimal value of <strong><code>5</code></strong>, and <strong><code>5 ^ 0 = 5</code></strong>, hence the answer to the first query is <code>[0,2]</code>. In the second query, the substring in range <code>[2,3]</code> is <strong>&quot;11&quot;,</strong> and has a decimal value of <strong>3</strong>, and <strong>3<code> ^ 1 = 2</code></strong>.&nbsp;So, <code>[2,3]</code> is returned for the second query. 
+
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> s = &quot;0101&quot;, queries = [[12,8]]
+<strong>Output:</strong> [[-1,-1]]
+<strong>Explanation:</strong> In this example there is no substring that answers the query, hence <code>[-1,-1] is returned</code>.
+</pre>
+
+<p><strong class="example">Example 3:</strong></p>
+
+<pre>
+<strong>Input:</strong> s = &quot;1&quot;, queries = [[4,5]]
+<strong>Output:</strong> [[0,0]]
+<strong>Explanation:</strong> For this example, the substring in range <code>[0,0]</code> has a decimal value of <strong><code>1</code></strong>, and <strong><code>1 ^ 4 = 5</code></strong>. So, the answer is <code>[0,0]</code>.
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>1 &lt;= s.length &lt;= 10<sup>4</sup></code></li>
+	<li><code>s[i]</code> is either <code>&#39;0&#39;</code> or <code>&#39;1&#39;</code>.</li>
+	<li><code>1 &lt;= queries.length &lt;= 10<sup>5</sup></code></li>
+	<li><code>0 &lt;= first<sub>i</sub>, second<sub>i</sub> &lt;= 10<sup>9</sup></code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<h1 id="intuition">Intuition</h1>
+<p>The idea is to store all (upto 32 digits long) binary substrings of <code class="language-plaintext highlighter-rouge">"s"</code> in a hashmap and then check the hashmap for each query.</p>
+
+<p>Here is the logic to enumerate all non-zero binary substrings of a string of length 1 to 32:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s">"0"</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">min</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">32</span><span class="p">,</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">());</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="p">(</span><span class="n">num</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="s">"0"</span><span class="p">);</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"substring:"</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">",value:"</span> <span class="o">&lt;&lt;</span> <span class="n">num</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
+ </code></pre></figure>
+
+<p>We just need to expand this logic to also consider the substring <code class="language-plaintext highlighter-rouge">"0"</code> and also to create a hashmap of <code class="language-plaintext highlighter-rouge">num: [i,j]</code> instead of just printing.</p>
+
+<p>The hashmap stores the positions of first instance of a substring.</p>
+
+<p>While querying, we are looking for <code class="language-plaintext highlighter-rouge">query[0]^query[1]</code> because <code class="language-plaintext highlighter-rouge">a^c=b =&gt; c=a^b</code>. If we find it in hashmap we append its positions to result else append <code class="language-plaintext highlighter-rouge">[-1,-1]</code>.</p>
+
+<h1 id="code">Code</h1>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">substringXorQueries</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">queries</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">H</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s">"0"</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">H</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="n">H</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">};</span> 
+                <span class="k">continue</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">min</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">32</span><span class="p">,(</span><span class="kt">int</span><span class="p">)</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">());</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> 
+            <span class="p">{</span>
+                <span class="n">num</span> <span class="o">=</span> <span class="p">(</span><span class="n">num</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="s">"0"</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">H</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">num</span><span class="p">))</span> <span class="n">H</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">};</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">res</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="n">query</span><span class="o">:</span> <span class="n">queries</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">val</span> <span class="o">=</span> <span class="n">query</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">^</span><span class="n">query</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">H</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="n">res</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">H</span><span class="p">[</span><span class="n">val</span><span class="p">]);</span>
+            <span class="k">else</span> <span class="n">res</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">});</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+<h1 id="complexity">Complexity</h1>
+<p>TC: $O(n+m)$, SC: $O(n+m)$ where $n=\vert s \vert$, $m=\vert Q \vert $</p>
+
+<h3 id="note-on-limits">Note on limits</h3>
+<p>Actually we can also change the for loop to only consider substrings of upto 30 digits long: <code class="language-plaintext highlighter-rouge">for (int j=i; j&lt;min(i+30,(int)s.length()); j++)</code>. This is because both <code class="language-plaintext highlighter-rouge">first</code> and <code class="language-plaintext highlighter-rouge">second</code> are in the range $[0,10^9]$, we know that $10^9$ in binary is 30 digits long. Hence their XOR can be at max 30 digits long ie their maximum value can be <code class="language-plaintext highlighter-rouge">2^{30}-1</code>.</p>
+
+<p>In the current solution written above, the hashmap will also contain -ve numbers which is not useful for us but does us no harm. By changing 32 to 30 in the for loop, we can make hashmap a little bit smaller.</p>]]></content><author><name></name></author><category term="Array" /><category term="Hash Table" /><category term="String" /><category term="Bit Manipulation" /><category term="C++" /><category term="Medium" /><summary type="html"><![CDATA[Problem Statement: You are given a binary string s, and a 2D integer array queries where queries[i] = [firsti, secondi].]]></summary></entry><entry><title type="html">As Far from Land as Possible - Multi Source BFS</title><link href="http://localhost:4000/leetcode-solutions/2023/02/10/as-far-from-land-as-possible-multi-source-bfs.html" rel="alternate" type="text/html" title="As Far from Land as Possible - Multi Source BFS" /><published>2023-02-10T00:00:00+00:00</published><updated>2023-02-10T00:00:00+00:00</updated><id>http://localhost:4000/leetcode-solutions/2023/02/10/as%20far%20from%20land%20as%20possible-multi%20source%20bfs</id><content type="html" xml:base="http://localhost:4000/leetcode-solutions/2023/02/10/as-far-from-land-as-possible-multi-source-bfs.html"><![CDATA[<h1 id="problem-statement">Problem Statement:</h1>
+<p>Given an <code>n x n</code> <code>grid</code>&nbsp;containing only values <code>0</code> and <code>1</code>, where&nbsp;<code>0</code> represents water&nbsp;and <code>1</code> represents land, find a water cell such that its distance to the nearest land cell is maximized, and return the distance.&nbsp;If no land or water exists in the grid, return <code>-1</code>.</p>
+
+<p>The distance used in this problem is the Manhattan distance:&nbsp;the distance between two cells <code>(x0, y0)</code> and <code>(x1, y1)</code> is <code>|x0 - x1| + |y0 - y1|</code>.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2019/05/03/1336_ex1.JPG" style="width: 185px; height: 87px;" /></p>
+<pre>
+<strong>Input:</strong> grid = [[1,0,1],[0,0,0],[1,0,1]]
+<strong>Output:</strong> 2
+<strong>Explanation:</strong> The cell (1, 1) is as far as possible from all the land with distance 2.
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2019/05/03/1336_ex2.JPG" style="width: 184px; height: 87px;" /></p>
+<pre>
+<strong>Input:</strong> grid = [[1,0,0],[0,0,0],[0,0,0]]
+<strong>Output:</strong> 4
+<strong>Explanation:</strong> The cell (2, 2) is as far as possible from all the land with distance 4.
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>n == grid.length</code></li>
+	<li><code>n == grid[i].length</code></li>
+	<li><code>1 &lt;= n&nbsp;&lt;= 100</code></li>
+	<li><code>grid[i][j]</code>&nbsp;is <code>0</code> or <code>1</code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<p>BFS is very appropriate here. We just need to check how many times we need to traverse to finish the queue of land cells. In one traversal, all adjacent members of the current queue get covered and converted to land cells.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">maxDistance</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">grid</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">grid</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">distance</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">queue</span><span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">Q</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span> <span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">({</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">});</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Q</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="o">||</span><span class="n">Q</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">==</span><span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="c1">//All water or all land</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">directions</span><span class="p">{</span> <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">},{</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">},{</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">},{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">}</span> <span class="p">};</span>
+        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">Q</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">Q</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">cell</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+                <span class="n">Q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+                <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="n">dir</span><span class="o">:</span> <span class="n">directions</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">cell</span><span class="p">.</span><span class="n">first</span><span class="o">+</span><span class="n">dir</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+                    <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">cell</span><span class="p">.</span><span class="n">second</span><span class="o">+</span><span class="n">dir</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">||</span><span class="n">x</span><span class="o">&gt;=</span><span class="n">n</span><span class="o">||</span><span class="n">y</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">||</span><span class="n">y</span><span class="o">&gt;=</span><span class="n">n</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                        <span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">({</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">});</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="n">distance</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">distance</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>]]></content><author><name></name></author><category term="Array" /><category term="Dynamic Programming" /><category term="Breadth-First Search" /><category term="Matrix" /><category term="C++" /><category term="Medium" /><summary type="html"><![CDATA[Problem Statement: Given an n x n grid&nbsp;containing only values 0 and 1, where&nbsp;0 represents water&nbsp;and 1 represents land, find a water cell such that its distance to the nearest land cell is maximized, and return the distance.&nbsp;If no land or water exists in the grid, return -1.]]></summary></entry></feed>

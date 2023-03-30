@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Surrounded Regions - Island method [DFS] | Leetcode Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Surrounded Regions - Island method [DFS]" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Problem Statement: Given an m x n matrix board containing &#39;X&#39; and &#39;O&#39;, capture all regions that are 4-directionally&nbsp;surrounded by &#39;X&#39;." />
+<meta property="og:description" content="Problem Statement: Given an m x n matrix board containing &#39;X&#39; and &#39;O&#39;, capture all regions that are 4-directionally&nbsp;surrounded by &#39;X&#39;." />
+<link rel="canonical" href="http://localhost:4000/leetcode-solutions/2022/10/17/surrounded-regions-island-method-dfs.html" />
+<meta property="og:url" content="http://localhost:4000/leetcode-solutions/2022/10/17/surrounded-regions-island-method-dfs.html" />
+<meta property="og:site_name" content="Leetcode Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-10-17T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Surrounded Regions - Island method [DFS]" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-10-17T00:00:00+00:00","datePublished":"2022-10-17T00:00:00+00:00","description":"Problem Statement: Given an m x n matrix board containing &#39;X&#39; and &#39;O&#39;, capture all regions that are 4-directionally&nbsp;surrounded by &#39;X&#39;.","headline":"Surrounded Regions - Island method [DFS]","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/leetcode-solutions/2022/10/17/surrounded-regions-island-method-dfs.html"},"url":"http://localhost:4000/leetcode-solutions/2022/10/17/surrounded-regions-island-method-dfs.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/leetcode-solutions/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/leetcode-solutions/feed.xml" title="Leetcode Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/leetcode-solutions/">Leetcode Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/leetcode-solutions/about/">About</a><a class="page-link" href="/leetcode-solutions/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Surrounded Regions - Island method [DFS]</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-10-17T00:00:00+00:00" itemprop="datePublished">Oct 17, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Array">Array &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Breadth-First Search">Breadth-First Search &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Depth-First Search">Depth-First Search &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Matrix">Matrix &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Medium">Medium &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Union Find">Union Find &nbsp;&nbsp;&nbsp; </a><br>
+<br>
+<h1 id="problem-statement">Problem Statement:</h1>
+<p>Given an <code>m x n</code> matrix <code>board</code> containing <code>&#39;X&#39;</code> and <code>&#39;O&#39;</code>, <em>capture all regions that are 4-directionally&nbsp;surrounded by</em> <code>&#39;X&#39;</code>.</p>
+
+<p>A region is <strong>captured</strong> by flipping all <code>&#39;O&#39;</code>s into <code>&#39;X&#39;</code>s in that surrounded region.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2021/02/19/xogrid.jpg" style="width: 550px; height: 237px;" /></p>
+<pre>
+<strong>Input:</strong> board = [[&quot;X&quot;,&quot;X&quot;,&quot;X&quot;,&quot;X&quot;],[&quot;X&quot;,&quot;O&quot;,&quot;O&quot;,&quot;X&quot;],[&quot;X&quot;,&quot;X&quot;,&quot;O&quot;,&quot;X&quot;],[&quot;X&quot;,&quot;O&quot;,&quot;X&quot;,&quot;X&quot;]]
+<strong>Output:</strong> [[&quot;X&quot;,&quot;X&quot;,&quot;X&quot;,&quot;X&quot;],[&quot;X&quot;,&quot;X&quot;,&quot;X&quot;,&quot;X&quot;],[&quot;X&quot;,&quot;X&quot;,&quot;X&quot;,&quot;X&quot;],[&quot;X&quot;,&quot;O&quot;,&quot;X&quot;,&quot;X&quot;]]
+<strong>Explanation:</strong> Notice that an &#39;O&#39; should not be flipped if:
+- It is on the border, or
+- It is adjacent to an &#39;O&#39; that should not be flipped.
+The bottom &#39;O&#39; is on the border, so it is not flipped.
+The other three &#39;O&#39; form a surrounded region, so they are flipped.
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> board = [[&quot;X&quot;]]
+<strong>Output:</strong> [[&quot;X&quot;]]
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>m == board.length</code></li>
+	<li><code>n == board[i].length</code></li>
+	<li><code>1 &lt;= m, n &lt;= 200</code></li>
+	<li><code>board[i][j]</code> is <code>&#39;X&#39;</code> or <code>&#39;O&#39;</code>.</li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<p>This is inspired from my previous posts on simlar questions: <a href="https://leetcode.com/problems/number-of-islands/discuss/2714931/Easy-DFS">Number of Islands</a> and <a href="https://leetcode.com/problems/count-sub-islands/discuss/2632544/DFS-solution">Count sub islands</a>.</p>
+
+<p>The idea is to collect all the cells of an island in an array and check if the island is indeed surrounded or not. If it is then we change to X”s and if not, we revert to original. The check for whether an island is surrounded or not is pretty simple: If any of its cells is a boundary cell then it is not surrounded and if not then it is surrounded.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Solution {
+public:
+    void dfs(vector&lt;vector&lt;char&gt;&gt; &amp;board, int m, int n, int i, int j, vector&lt;pair&lt;int,int&gt;&gt;&amp;isle)
+    {
+        if (i&lt;0||i&gt;=m||j&lt;0||j&gt;=n||board[i][j]!="O") return;
+        board[i][j] = "*";
+        isle.push_back({i,j});
+        dfs(board,m,n,i-1,j,isle);
+        dfs(board,m,n,i+1,j,isle);
+        dfs(board,m,n,i,j-1,isle);
+        dfs(board,m,n,i,j+1,isle);
+    }
+    void surround(vector&lt;vector&lt;char&gt;&gt; &amp;board, int m, int n,vector&lt;pair&lt;int,int&gt;&gt;&amp;isle)
+    {
+        bool toSurround = true;
+        for (auto p: isle)
+            if (p.first==0 || p.first==(m-1) || p.second==0 || p.second==n-1)
+            {
+                toSurround = false;
+                break;
+            }
+        if (toSurround)
+        {
+            for (auto p: isle)
+                board[p.first][p.second] = "X";            
+        }
+        else
+        {
+            for (auto p: isle)
+                board[p.first][p.second] = "O";            
+        }
+        
+    }
+    void solve(vector&lt;vector&lt;char&gt;&gt;&amp; board) 
+    {
+        int m = board.size(), n=board[0].size();
+        for (int i=0; i&lt;m; ++i)
+        {
+            for (int j=0; j&lt;n; ++j)
+            {
+                if (board[i][j]=="O")
+                {
+                    vector&lt;pair&lt;int,int&gt;&gt; isle;
+                    dfs(board,m,n,i,j,isle);
+                    surround(board,m,n,isle);
+                }
+            }
+        }
+    }
+};
+</code></pre></div></div>
+
+<p>The other method is to mark all islands having at leat one cell at boundary with <code class="language-plaintext highlighter-rouge">*</code>. Then if you find land, depending on whether it is marked or not convert it to “X” or back to “O”.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Solution {
+public:
+    void dfs(vector&lt;vector&lt;char&gt;&gt;&amp; board, int m, int n, int i, int j)
+    {
+        if (i&lt;0||i&gt;=m||j&lt;0||j&gt;=n||board[i][j]!="O") return;
+        board[i][j] = "*";
+        dfs(board,m,n,i-1,j);
+        dfs(board,m,n,i+1,j);
+        dfs(board,m,n,i,j-1);
+        dfs(board,m,n,i,j+1);
+    }
+    void solve(vector&lt;vector&lt;char&gt;&gt;&amp; board) 
+    {
+        int m = board.size(), n=board[0].size();
+        for (int i=0; i&lt;m; ++i)
+        {
+            dfs(board, m, n, i, 0);
+            dfs(board, m, n, i, n-1);
+        }
+        for (int j=0; j&lt;n; ++j)
+        {
+            dfs(board, m, n, 0, j);
+            dfs(board, m, n, m-1, j);
+        }
+        for (int i=0; i&lt;m; ++i)
+        {
+            for (int j=0; j&lt;n; ++j)
+            {
+                if (board[i][j]=="*")
+                    board[i][j] = "O";
+                else if (board[i][j] = "O")
+                    board[i][j] = "X";
+            }
+        }
+        return;
+    }
+};
+</code></pre></div></div>
+<p>Credits for 2nd method goes to <a href="https://leetcode.com/problems/surrounded-regions/discuss/691675/C%2B%2B-Beginner-Friendly-or-Boundary-DFS-or-inPlace">this post</a></p>
+
+<h1 id="note-on-tc-and-sc">Note on TC and SC</h1>
+<p>Both the solutions have <code class="language-plaintext highlighter-rouge">O(m*n)</code> TC and first solution has <code class="language-plaintext highlighter-rouge">O(m*n)</code> SC whereas second solution has <code class="language-plaintext highlighter-rouge">O(1)</code> SC.</p>
+
+<p>In general for any grid type problem it is impossible to find better than <code class="language-plaintext highlighter-rouge">O(m*n)</code> TC but the SC can be improved as we saw here.</p>
+
+  </div><a class="u-url" href="/leetcode-solutions/2022/10/17/surrounded-regions-island-method-dfs.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/leetcode-solutions/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Leetcode Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Leetcode Blog</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/piyush01123"><svg class="svg-icon"><use xlink:href="/leetcode-solutions/assets/minima-social-icons.svg#github"></use></svg> <span class="username">piyush01123</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog of all my leetcode discussion posts.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

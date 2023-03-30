@@ -7,7 +7,7 @@ const glob = require("glob");
 
 const maxRetries = 8; // Number of times to do GET on LC api
 const commit_message = 'Sync LeetCode';
-const solutions_branch = "lcblog"
+const blog_branch = "lcblog"
 const owner = context.repo.owner;
 const repo = context.repo.repo;
 const leetcodeCSRFToken = process.env.LEETCODE_CSRF_TOKEN;
@@ -38,12 +38,12 @@ async function getLastTimestamp()
 	});
 	let branchNames = [];
 	for (let branch of branches.data) branchNames.push(branch.name);
-	if (!branchNames.includes(solutions_branch)) return 0;
+	if (!branchNames.includes(blog_branch)) return 0;
 	let commits = await octokit.repos.listCommits({
 		owner: owner,
 		repo: repo,
 		per_page: 100,
-		sha: solutions_branch
+		sha: blog_branch
 	});
 	let lastTimestamp = 0;
 	for (let commit of commits.data) {
@@ -77,7 +77,7 @@ async function initBranch()
 	let treeResponse = await octokit.git.createTree({
 		owner: owner,
 		repo: repo,
-		sha: solutions_branch,
+		sha: blog_branch,
 		tree: mytree
 	});
 	let commitResponse = await octokit.git.createCommit({
@@ -90,14 +90,14 @@ async function initBranch()
 		owner: owner,
 		repo: repo,
 		sha: commitResponse.data.sha,
-		ref: 'refs/heads/' + solutions_branch,
+		ref: 'refs/heads/' + blog_branch,
 		force: true
 	});
 	await octokit.git.updateRef({
 		owner: owner,
 		repo: repo,
 		sha: commitResponse.data.sha,
-		ref: 'heads/' + solutions_branch,
+		ref: 'heads/' + blog_branch,
 		force: true
 	});
 }
@@ -192,7 +192,7 @@ async function sync()
 	});
 	let branchNames = [];
 	for (let branch of branches.data) branchNames.push(branch.name);
-	if (!branchNames.includes(solutions_branch)) await initBranch();
+	if (!branchNames.includes(blog_branch)) await initBranch();
 
 	let lastTimestamp = await getLastTimestamp();
 	let question_data = await getAllQuestions();
@@ -261,7 +261,7 @@ async function sync()
 	let refData = await octokit.git.getRef({
 		owner: owner,
 		repo: repo,
-		ref: `heads/${solutions_branch}`,
+		ref: `heads/${blog_branch}`,
 	});
 	let commitData = await octokit.git.getCommit({
 			owner: owner,
@@ -285,7 +285,7 @@ async function sync()
 		owner: owner,
 		repo: repo,
 		sha: commitResponse.data.sha,
-		ref: 'heads/' + solutions_branch,
+		ref: 'heads/' + blog_branch,
 		force: true
 	});
 	console.log("Done.");

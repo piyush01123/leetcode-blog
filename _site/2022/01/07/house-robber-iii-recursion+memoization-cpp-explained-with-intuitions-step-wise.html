@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>House Robber III - Recursion+Memoization [cpp] Explained with intuitions step-wise | Leetcode Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="House Robber III - Recursion+Memoization [cpp] Explained with intuitions step-wise" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Problem Statement: The thief has found himself a new place for his thievery again. There is only one entrance to this area, called root." />
+<meta property="og:description" content="Problem Statement: The thief has found himself a new place for his thievery again. There is only one entrance to this area, called root." />
+<link rel="canonical" href="http://localhost:4000/leetcode-solutions/2022/01/07/house-robber-iii-recursion+memoization-cpp-explained-with-intuitions-step-wise.html" />
+<meta property="og:url" content="http://localhost:4000/leetcode-solutions/2022/01/07/house-robber-iii-recursion+memoization-cpp-explained-with-intuitions-step-wise.html" />
+<meta property="og:site_name" content="Leetcode Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-01-07T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="House Robber III - Recursion+Memoization [cpp] Explained with intuitions step-wise" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-01-07T00:00:00+00:00","datePublished":"2022-01-07T00:00:00+00:00","description":"Problem Statement: The thief has found himself a new place for his thievery again. There is only one entrance to this area, called root.","headline":"House Robber III - Recursion+Memoization [cpp] Explained with intuitions step-wise","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/leetcode-solutions/2022/01/07/house-robber-iii-recursion+memoization-cpp-explained-with-intuitions-step-wise.html"},"url":"http://localhost:4000/leetcode-solutions/2022/01/07/house-robber-iii-recursion+memoization-cpp-explained-with-intuitions-step-wise.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/leetcode-solutions/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/leetcode-solutions/feed.xml" title="Leetcode Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/leetcode-solutions/">Leetcode Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/leetcode-solutions/about/">About</a><a class="page-link" href="/leetcode-solutions/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">House Robber III - Recursion+Memoization [cpp] Explained with intuitions step-wise</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-01-07T00:00:00+00:00" itemprop="datePublished">Jan 7, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Binary Tree">Binary Tree &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/C++">C++ &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Depth-First Search">Depth-First Search &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Dynamic Programming">Dynamic Programming &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Medium">Medium &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Memoization">Memoization &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Recursion">Recursion &nbsp;&nbsp;&nbsp; </a><img src="/leetcode-solutions/tag-solid.svg" height="20"><a href="/leetcode-solutions/tag/Tree">Tree &nbsp;&nbsp;&nbsp; </a><br>
+<br>
+<h1 id="problem-statement">Problem Statement:</h1>
+<p>The thief has found himself a new place for his thievery again. There is only one entrance to this area, called <code>root</code>.</p>
+
+<p>Besides the <code>root</code>, each house has one and only one parent house. After a tour, the smart thief realized that all houses in this place form a binary tree. It will automatically contact the police if <strong>two directly-linked houses were broken into on the same night</strong>.</p>
+
+<p>Given the <code>root</code> of the binary tree, return <em>the maximum amount of money the thief can rob <strong>without alerting the police</strong></em>.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2021/03/10/rob1-tree.jpg" style="width: 277px; height: 293px;" /></p>
+<pre>
+<strong>Input:</strong> root = [3,2,3,null,3,null,1]
+<strong>Output:</strong> 7
+<strong>Explanation:</strong> Maximum amount of money the thief can rob = 3 + 3 + 1 = 7.
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2021/03/10/rob2-tree.jpg" style="width: 357px; height: 293px;" /></p>
+<pre>
+<strong>Input:</strong> root = [3,4,5,1,3,null,1]
+<strong>Output:</strong> 9
+<strong>Explanation:</strong> Maximum amount of money the thief can rob = 4 + 5 = 9.
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li>The number of nodes in the tree is in the range <code>[1, 10<sup>4</sup>]</code>.</li>
+	<li><code>0 &lt;= Node.val &lt;= 10<sup>4</sup></code></li>
+</ul>
+
+<h1 id="solution">Solution:</h1>
+<p>Let us start at the <code class="language-plaintext highlighter-rouge">root</code> node. Assume that <code class="language-plaintext highlighter-rouge">root-&gt;left</code> and <code class="language-plaintext highlighter-rouge">root-&gt;right</code> are both non-NULL and define the following:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="n">TreeNode</span> <span class="o">*</span><span class="n">L</span><span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span>
+<span class="n">TreeNode</span> <span class="o">*</span><span class="n">R</span> <span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span>
+<span class="n">TreeNode</span> <span class="o">*</span><span class="n">LL</span> <span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="o">-&gt;</span><span class="n">left</span>
+<span class="n">TreeNode</span> <span class="o">*</span><span class="n">LR</span><span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="o">-&gt;</span><span class="n">right</span>
+<span class="n">TreeNode</span> <span class="o">*</span><span class="n">RL</span> <span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="o">-&gt;</span><span class="n">left</span>
+<span class="n">TreeNode</span> <span class="o">*</span><span class="n">RR</span><span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="o">-&gt;</span><span class="n">right</span>
+ </code></pre></figure>
+
+<p>Now, the recursive relation is:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="n">rob</span><span class="p">(</span><span class="n">root</span><span class="p">)</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">rob</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="o">+</span><span class="n">rob</span><span class="p">(</span><span class="n">R</span><span class="p">),</span>  <span class="n">root</span><span class="o">-&gt;</span><span class="n">val</span><span class="o">+</span><span class="n">rob</span><span class="p">(</span><span class="n">LL</span><span class="p">)</span><span class="o">+</span><span class="n">rob</span><span class="p">(</span><span class="n">LR</span><span class="p">)</span><span class="o">+</span><span class="n">rob</span><span class="p">(</span><span class="n">RL</span><span class="p">)</span><span class="o">+</span><span class="n">rob</span><span class="p">(</span><span class="n">RR</span><span class="p">))</span>
+ </code></pre></figure>
+
+<p>If <code class="language-plaintext highlighter-rouge">root-&gt;left</code> is NULL, then we replace <code class="language-plaintext highlighter-rouge">rob(LL)+rob(LR)</code> with the value zero. Thus we have the following relation:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="n">rob</span><span class="p">(</span><span class="n">root</span><span class="p">)</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">rob</span><span class="p">(</span><span class="n">R</span><span class="p">),</span>  <span class="n">root</span><span class="o">-&gt;</span><span class="n">val</span><span class="o">+</span><span class="n">rob</span><span class="p">(</span><span class="n">RL</span><span class="p">)</span><span class="o">+</span><span class="n">rob</span><span class="p">(</span><span class="n">RR</span><span class="p">))</span>
+ </code></pre></figure>
+
+<p>Similarly if <code class="language-plaintext highlighter-rouge">root-&gt;right</code> is NULL, we have the following relation</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="n">rob</span><span class="p">(</span><span class="n">root</span><span class="p">)</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">rob</span><span class="p">(</span><span class="n">L</span><span class="p">),</span>  <span class="n">root</span><span class="o">-&gt;</span><span class="n">val</span><span class="o">+</span><span class="n">rob</span><span class="p">(</span><span class="n">LL</span><span class="p">)</span><span class="o">+</span><span class="n">rob</span><span class="p">(</span><span class="n">LR</span><span class="p">))</span>
+ </code></pre></figure>
+
+<h1 id="vanilla-recursion-method">Vanilla recursion Method</h1>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">rob</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">root</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">TreeNode</span> <span class="o">*</span><span class="n">l</span><span class="o">=</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="o">*</span><span class="n">r</span><span class="o">=</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="o">*</span><span class="n">ll</span><span class="p">,</span> <span class="o">*</span><span class="n">lr</span><span class="p">,</span> <span class="o">*</span><span class="n">rl</span><span class="p">,</span> <span class="o">*</span><span class="n">rr</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">l</span><span class="p">){</span><span class="n">ll</span><span class="o">=</span><span class="n">l</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span> <span class="n">lr</span><span class="o">=</span><span class="n">l</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">r</span><span class="p">){</span><span class="n">rl</span><span class="o">=</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span> <span class="n">rr</span><span class="o">=</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;}</span>
+        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">?</span><span class="n">rob</span><span class="p">(</span><span class="n">ll</span><span class="p">)</span><span class="o">+</span><span class="n">rob</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span><span class="o">:</span><span class="mi">0</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">?</span><span class="n">rob</span><span class="p">(</span><span class="n">rl</span><span class="p">)</span><span class="o">+</span><span class="n">rob</span><span class="p">(</span><span class="n">rr</span><span class="p">)</span><span class="o">:</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nf">max</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">val</span><span class="o">+</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">rob</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">+</span><span class="n">rob</span><span class="p">(</span><span class="n">r</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+<p>The logic is perfectly correct in above algorithm and passes for the two test cases given in description. However on submission it gives <code class="language-plaintext highlighter-rouge">TLE</code> for large tree.</p>
+
+<h1 id="memoization">Memoization</h1>
+
+<p>Notice that in the vanilla method, we are calculating the value for each node multiple times. Hence we can do memoization to reduce complexity. The idea is to use an HashMap ie <code class="language-plaintext highlighter-rouge">unordered_map&lt;TreeNode *, int&gt;</code>. At each node we return from the HashMap if present else calculate the value and add to the HashMap and then return the same.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">helper</span><span class="p">(</span><span class="n">TreeNode</span> <span class="o">*</span><span class="n">root</span><span class="p">,</span> <span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">TreeNode</span> <span class="o">*</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">money</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">root</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">money</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">root</span><span class="p">)</span><span class="o">!=</span><span class="n">money</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="k">return</span> <span class="n">money</span><span class="p">[</span><span class="n">root</span><span class="p">];</span>
+        <span class="n">TreeNode</span> <span class="o">*</span><span class="n">l</span><span class="o">=</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="o">*</span><span class="n">r</span><span class="o">=</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="o">*</span><span class="n">ll</span><span class="p">,</span> <span class="o">*</span><span class="n">lr</span><span class="p">,</span> <span class="o">*</span><span class="n">rl</span><span class="p">,</span> <span class="o">*</span><span class="n">rr</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">l</span><span class="p">){</span><span class="n">ll</span><span class="o">=</span><span class="n">l</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span> <span class="n">lr</span><span class="o">=</span><span class="n">l</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">r</span><span class="p">){</span><span class="n">rl</span><span class="o">=</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span> <span class="n">rr</span><span class="o">=</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;}</span>
+        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">?</span><span class="n">helper</span><span class="p">(</span><span class="n">ll</span><span class="p">,</span><span class="n">money</span><span class="p">)</span><span class="o">+</span><span class="n">helper</span><span class="p">(</span><span class="n">lr</span><span class="p">,</span><span class="n">money</span><span class="p">)</span><span class="o">:</span><span class="mi">0</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">?</span><span class="n">helper</span><span class="p">(</span><span class="n">rl</span><span class="p">,</span><span class="n">money</span><span class="p">)</span><span class="o">+</span><span class="n">helper</span><span class="p">(</span><span class="n">rr</span><span class="p">,</span><span class="n">money</span><span class="p">)</span><span class="o">:</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">money</span><span class="p">[</span><span class="n">root</span><span class="p">]</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">val</span><span class="o">+</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">helper</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">money</span><span class="p">)</span><span class="o">+</span><span class="n">helper</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">money</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="nf">rob</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">TreeNode</span> <span class="o">*</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">moneys</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">helper</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">moneys</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+ </code></pre></figure>
+
+<p>Time complexity: O(n)
+Space complexity: O(n)</p>
+
+<p>Please upvote and comment if you found this useful.</p>
+
+  </div><a class="u-url" href="/leetcode-solutions/2022/01/07/house-robber-iii-recursion+memoization-cpp-explained-with-intuitions-step-wise.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/leetcode-solutions/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Leetcode Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Leetcode Blog</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/piyush01123"><svg class="svg-icon"><use xlink:href="/leetcode-solutions/assets/minima-social-icons.svg#github"></use></svg> <span class="username">piyush01123</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog of all my leetcode discussion posts.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
