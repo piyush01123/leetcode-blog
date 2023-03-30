@@ -167,7 +167,7 @@ async function getAllPosts(lastTimestamp)
 			}
 		});
 		let response = await axios(URL,config);
-		response.data.data.topic.post.content = response.data.data.topic.post.content.replace(/\\n/g, '\n').replace(/\\"/g, "'").replace(/\\'/g, '"').replace(/\\\\/g, '\\').replace(/\\t/g, '\t');
+		response.data.data.topic.post.content = response.data.data.topic.post.content.replace(/\\n/g, '\n').replace(/\\"/g, '"').replace(/\\'/g, "'").replace(/\\\\/g, '\\').replace(/\\t/g, '\t');
 		post.post_data = response.data.data.topic;
 		if (post.post_data.post.creationDate < lastTimestamp) break;
 		post_data.push(post);
