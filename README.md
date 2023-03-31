@@ -16,12 +16,12 @@ This is a tool to sync your leetcode discussion posts into an automatically gene
 3. To save these as repo secrets, go to repo settings -> secrets and variables -> actions -> new repository secret and save the 3 variables `LEETCODE_CSRF_TOKEN`, `LEETCODE_SESSION` and `LEETCODE_ID`.
 4. Go to Actions -> Sync My Leetcode Submissions -> Run workflow. Refesh to see logs. You can now verify that you have 3 branches `master`, `leetcode` and `lcblog`
 5. Go to repo settings -> pages -> build and deployment. Select branch `lcblog`.
-6. If everything has worked till now, you should now be able to see your blog at `${github_username}.github.io/leetcode-solutions`. Note that you need to have a working root url (`${github_username}.github.io`). Hopefully you already have a personal webiste on this URL. If not, create a blank website to make the URL active.
+6. If everything has worked till now, you should now be able to see your blog at `${github_username}.github.io/leetcode-solutions`. 
 
 *BONUS: It also syncs all your submissions (AC status) into another branch called ac_submissions*
 
 ## Customize your leetcode blog
-I have created this using [minima](https://github.com/jekyll/minima) theme but you can change the theme or add new plugins etc by tinkering with the [template](/template/) directory. [Jekyll docs](https://jekyllrb.com/docs/) and [Liquid docs](https://shopify.github.io/liquid/) will be helpful to get started.
+I have created this tool using [minima](https://github.com/jekyll/minima) theme but you can change the theme or add new plugins by tinkering with the [template](/template/) directory. [Jekyll docs](https://jekyllrb.com/docs/) and [Liquid docs](https://shopify.github.io/liquid/) will be helpful to get started.
 
 ## Acknowledgement
 This project was initially inspired from [here](https://github.com/joshcai/leetcode-sync).
