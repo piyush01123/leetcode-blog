@@ -1,11 +1,10 @@
 # Leetcode Blog
 This is a tool to sync your leetcode discussion posts into an automatically generated blog. My blog is present at https://piyush01123.github.io/leetcode-blog. The blog has tags on each post and one can look up all the posts having a specific tag. Here are some screenshots:
 
-
-| | | |
-|-|-|-|
-![Screenshot 2023-03-30 at 1 08 50 PM](https://user-images.githubusercontent.com/19518507/228764577-27b92298-247a-4719-a299-b0a664cb957d.png) | ![Screenshot 2023-03-30 at 1 09 18 PM](https://user-images.githubusercontent.com/19518507/228764621-8199a0d8-f154-43ee-9168-fdb843780d92.png) | ![Screenshot 2023-03-30 at 1 09 03 PM](https://user-images.githubusercontent.com/19518507/228765681-f5a186bb-3d8f-49b7-9123-358796cb7f24.png)
-
+| | |
+|-|-|
+![Screenshot 2023-03-31 at 6 48 39 AM](https://user-images.githubusercontent.com/19518507/228999343-923f9878-d22c-41eb-820e-8919b81df09a.png) | ![Screenshot 2023-03-31 at 6 49 52 AM](https://user-images.githubusercontent.com/19518507/228999335-d374b474-c1b3-4c80-9e3b-94aa4057dd87.png)
+![Screenshot 2023-03-31 at 6 52 08 AM](https://user-images.githubusercontent.com/19518507/228999318-8618de89-a601-43db-9452-15af1ef96ea3.png) | ![Screenshot 2023-03-31 at 6 50 10 AM](https://user-images.githubusercontent.com/19518507/228999328-0f152fea-b601-428e-a86f-06903c3672bd.png) | 
 
 ## How to create your own leetcode blog
 1. Fork this repo. **Make sure to choose default branch `master` only**
