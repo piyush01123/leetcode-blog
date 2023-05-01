@@ -58,6 +58,7 @@ public:
         int rootX = find(x);
         int rootY = find(y);
         if (rootX==rootY) return;
+        if (ranks[rootX]==ranks[rootY]) ranks[rootX]++;
         if (ranks[rootX]<ranks[rootY]) swap(rootX,rootY);
         roots[rootY] = rootX;
     }
@@ -99,13 +100,16 @@ class UnionFind
         ranks = new int[sz];
         for(int i=0; i<sz; i++){roots[i]=i; ranks[i]=0;}
     }
-    public void unionSet(int x, int y)
+    public int unionSet(int x, int y)
     {
         int rootX = find(x);
         int rootY = find(y);
-        if (rootX==rootY) return;
-        if (ranks[rootX]<ranks[rootY]){int temp=rootX;rootX=rootY;rootY=temp;}
+        if (rootX==rootY) return 0;
+        if (ranks[rootX]==ranks[rootY]) ranks[rootX]++;
+        if (ranks[rootX]< ranks[rootY]) 
+            {int temp=rootX; rootX=rootY; rootY=temp;}
         roots[rootY] = rootX;
+        return 1;
     }
     public int find(int x)
     {
