@@ -3,6 +3,7 @@ layout: default
 title: Tags
 permalink: /tags/
 ---
+{% include darkmode.html %}
 
 Tags:
 <br>
