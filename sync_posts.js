@@ -200,10 +200,14 @@ async function sync()
 	let merged_data = [];
 	for (let i=0; i<post_data.length; i++)
 	{
-		merged_data.push({
-			...post_data[i],
-			...(question_data.find((item) => item.title === post_data[i].questionTitle))
-		});
+		let qdata = null;
+		let qtitle = post_data[i].questionTitle;
+		for (let question_datum of question_data)
+		{
+			if (question_datum.title === qtitle) {qdata = question_datum; break;}
+		}
+		if (qdata==null) continue;
+		else merged_data.push({...post_data[i], ...qdata});
 	}
 
     // let merged_data = JSON.parse(fs.readFileSync("jsons/merged_data.json"))
