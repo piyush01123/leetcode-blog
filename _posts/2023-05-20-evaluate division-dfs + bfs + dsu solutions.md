@@ -153,22 +153,22 @@ public:
  {% endhighlight %}
 
 **DSU solution**:
-In the `find` opration, we return the conversion factor with respect to the root node along with the value of the root node. In the `union` operation, I am illustrating with an example. Let $x$ and $y$ be two nodes with roots $R_x$ and $R_y$ respectively. We have the conversion factors $x=r_1R_x$ and $y=r_2R_y$ with respect to the respective root nodes. Now we get the equation $x=ry$. We must set the conversion rate of $R_y$ wrt $R_x$ now. We have  $x=r_1R_x, y=r_2R_y, x=ry$.  We can solve to get $R_y = \frac{r_1}{rr_2}R_x$. If we had to set $R_x$ wrt $R_y$, we would take the reciprocal ratio ie $R_x = \frac{rr_2}{r1}R_y$.
+In the `find` opration, we return the conversion factor with respect to the root node along with the value of the root node. In the `union` operation, I am illustrating with an example. Let $x$ and $y$ be two nodes with roots $R_x$ and $R_y$ respectively. We have the conversion factors $x=r_1R_x$ and $y=r_2R_y$ with respect to the respective root nodes. Now we get the equation $x=ry$. We must set the conversion rate of $R_y$ wrt $R_x$ now. We have  $x=r_1R_x, y=r_2R_y, x=ry$.  We can solve to get $R_y = \frac{r_1}{rr_2}R_x$.
 
  {% highlight cpp %} 
 class UnionFind
 {
+public:
     unordered_map<string, string> roots;
     unordered_map<string, int> ranks;
-    unordered_map<string, double> convRates;
-public:
-    UnionFind(unordered_set<string>nodes)
+    unordered_map<string, double> rates;
+    UnionFind(unordered_set<string> &nodes)
     {
-        for(string node: nodes)
+        for (string node: nodes)
         {
             roots[node] = node;
             ranks[node] = 1;
-            convRates[node] = 1;
+            rates[node] = 1;
         }
     }
     void unionSet(string x, string y, double rate)
@@ -177,45 +177,36 @@ public:
         string rootX = pairX.first, rootY = pairY.first;
         double rateX = pairX.second, rateY = pairY.second;
         if (rootX==rootY) return;
-        if (ranks[rootX] < ranks[rootY])
+        if (ranks[rootX]==ranks[rootY]) ranks[rootX]++;
+        if (ranks[rootX] <ranks[rootY])
         {
-            roots[rootX] = rootY;
-            convRates[rootX] = rateY / rateX * rate;
+            swap(rootX, rootY);
+            swap(rateX, rateY);
+            rate = 1/rate;
         }
-        else if(ranks[rootY] < ranks[rootX])
-        {
-            roots[rootY] = rootX;
-            convRates[rootY] = rateX / rateY / rate ;
-        }
-        else
-        {
-            roots[rootY] = rootX;
-            ranks[rootX] ++;
-            convRates[rootY] = rateX / rateY / rate;
-        }
-        return;
+        roots[rootY] = rootX;
+        //x=r1Rx, y=r2Ry, x=ry, r1Rx=r(r2Ry), Ry=(r1/(rr2))Rx
+        rates[rootY] =  rateX / rateY / rate;
     }
     pair<string,double> find(string x)
     {
-        if (x==roots[x]) return {x, convRates[x]};
+        if (x==roots[x]) return {x, rates[x]};
         auto pair = find(roots[x]);
         roots[x] = pair.first;
-        double m = pair.second;
-        convRates[x] *= m;
-        return {roots[x], convRates[x]};
+        rates[x] *= pair.second;
+        return {roots[x], rates[x]};
     }
-    double conversionRate(string x, string y)
+    double conversionFactor(string x, string y)
     {
         auto pairX = find(x), pairY = find(y);
         string rootX = pairX.first, rootY = pairY.first;
-        double rateX = pairX.second, rateY = pairY.second;        
+        double rateX = pairX.second, rateY = pairY.second;
         if (rootX!=rootY) return -1;
-        return convRates[x]/convRates[y];
+        return rateX/rateY;
     }
 };
 
-class Solution 
-{
+class Solution {
 public:
     vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, \
                                 vector<vector<string>>& queries) 
@@ -228,14 +219,14 @@ public:
             string a = equations[i][0];
             string b = equations[i][1];
             double v = values[i];
-            uf.unionSet(a,b,v);
+            uf.unionSet(a, b, v);
         }
         vector<double> res;
         for (auto &query: queries)
         {
-            string c=query[0], d=query[1];
+            string c = query[0], d=query[1];
             if (!nodes.count(c) || !nodes.count(d)) res.push_back(-1);
-            else res.push_back(uf.conversionRate(c,d));
+            else res.push_back(uf.conversionFactor(c, d));
         }
         return res;
     }
