@@ -175,6 +175,7 @@ async function getAllPosts(lastTimestamp)
 		let response = await axios(URL,config);
 		response.data.data.topic.post.content = response.data.data.topic.post.content.replace(/\\n/g, '\n').replace(/\\"/g, '"').replace(/\\'/g, "'").replace(/\\\\/g, '\\').replace(/\\t/g, '\t');
 		post.post_data = response.data.data.topic;
+		console.log("Time of posting:", Date(post.post_data.post.creationDate));
 		if (post.post_data.post.creationDate < lastTimestamp) break;
 		post_data.push(post);
 		console.log("Done post", post.id, post.title, '-', post.questionTitle);
@@ -201,6 +202,7 @@ async function sync()
 	if (!branchNames.includes(blog_branch)) await initBranch();
 
 	let lastTimestamp = await getLastTimestamp();
+	console.log("Last commit time with sync msg", Date(lastTimestamp))
 	let question_data = await getAllQuestions();
 	let post_data = await getAllPosts(lastTimestamp);
 	let merged_data = [];
