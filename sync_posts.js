@@ -104,9 +104,14 @@ async function initBranch()
 
 
 async function getAllQuestions(update=false){
-	let url = `https://raw.githubusercontent.com/piyush01123/leetcode-blog/${blog_branch}/question_data.json`;
-	let r = await axios.get(url);
-	let question_data = (r.data);
+	let url = `https://raw.githubusercontent.com/${owner}/${repo}/${blog_branch}/question_data.json`;
+	let question_data = []
+	try{
+		let r = await axios.get(url);
+		question_data = (r.data);
+	} catch(err) {
+		console.log("URL not found. Starting from beginning...");
+	}
 	// console.log(question_data[1000], "QD1000")
 	if (!update) return question_data;
 	let question_slugs = [];
