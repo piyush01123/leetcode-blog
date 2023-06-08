@@ -103,10 +103,15 @@ async function initBranch()
 }
 
 
-async function getAllQuestions(){
-	if (glob.sync('jsons/question_data.json').length) return JSON.parse(fs.readFileSync("jsons/question_data.json"));	
-	let question_data = [];
-	for (let skip of [0,1000,2000])
+async function getAllQuestions(update=false){
+	let url = `https://raw.githubusercontent.com/piyush01123/leetcode-blog/${blog_branch}/question_data.json`;
+	let r = await axios.get(url);
+	let question_data = (r.data);
+	// console.log(question_data[1000], "QD1000")
+	if (!update) return question_data;
+	let question_slugs = [];
+	for (let question_datum of question_data) question_slugs.push(question_datum.titleSlug)
+	for (let skip of [0,1000,2000,3000,4000,5000])
 	{
 		let curr_config = config;
 		curr_config.data = JSON.stringify({
@@ -121,6 +126,7 @@ async function getAllQuestions(){
 		let response = await axios(URL, curr_config);
 		for (let question_datum of response.data.data.problemsetQuestionList.questions)
 		{
+			if (question_slugs.includes(question_datum.titleSlug)) continue;
 			let curr_config = config;
 			curr_config.data = JSON.stringify({
 				"query": "    query questionContent($titleSlug: String!) {  question(titleSlug: $titleSlug) {    content     }}    ",
@@ -136,7 +142,7 @@ async function getAllQuestions(){
 			console.log("Saving question", question_datum.frontendQuestionId, question_datum.title);
 		}
 	}
-	// fs.writeFile(`./jsons/lc_${Date.now()}_question_data.json`, JSON.stringify(question_data), err=>{});
+	// fs.writeFileSync(`lc_${Date.now()}_question_data.json`, JSON.stringify(question_data));
 	// for (let question_datum of question_data) if (question_datum.content) 
 	// 	fs.writeFileSync(`question_contents/question_${question_datum.frontendQuestionId}_${question_datum.titleSlug}.md`, question_datum.content);
 	return question_data;
@@ -198,6 +204,8 @@ async function sync()
 	let question_data = await getAllQuestions();
 	let post_data = await getAllPosts(lastTimestamp);
 	let merged_data = [];
+	let treeData = [];
+	let updated = false;
 	for (let i=0; i<post_data.length; i++)
 	{
 		let qdata = null;
@@ -206,12 +214,25 @@ async function sync()
 		{
 			if (question_datum.title === qtitle) {qdata = question_datum; break;}
 		}
+		if (qdata==null && !updated)
+		{
+			console.log("Fetching question data for", qtitle);
+			question_data = await getAllQuestions(update=true);
+			treeData.push({
+				path: `question_data.json`,
+				mode: "100644",
+				content: JSON.stringify(question_data)
+			})
+			updated=true;
+		}
+		for (let question_datum of question_data)
+		{
+			if (question_datum.title === qtitle) {qdata = question_datum; break;}
+		}
 		if (qdata==null) continue;
 		else merged_data.push({...post_data[i], ...qdata});
 	}
-
     // let merged_data = JSON.parse(fs.readFileSync("jsons/merged_data.json"))
-	let treeData = [];
 	let allTags = []
     for(let qa of merged_data)
     {
@@ -261,7 +282,7 @@ async function sync()
 			}
 		);
 	}
-	console.log(treeData);
+	// console.log(treeData);
 	let refData = await octokit.git.getRef({
 		owner: owner,
 		repo: repo,
