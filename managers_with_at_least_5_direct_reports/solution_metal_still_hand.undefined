@@ -1,0 +1,9 @@
+import pandas as pd, collections
+
+def find_managers(employee: pd.DataFrame) -> pd.DataFrame:
+    df = pd.DataFrame(employee.groupby(["managerId"]).size())
+    df = df.rename(columns={0:'ctr'})
+    df["mgr"] = df.index
+    df.index = range(len(df))
+    joined = df.merge(employee, left_on="mgr", right_on="id")
+    return joined[["name"]][joined.ctr>=5]
