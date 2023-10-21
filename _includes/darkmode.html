@@ -1,12 +1,24 @@
 
   
+<link rel="shortcut icon" href="{{site.baseurl}}/lcblog.svg">
+<style>
+	.site-nav
+	{
+		display: flex;
+	}
+</style>
+<script>
+	let el = document.createElement("label");
+	el.className = "switch";
+	el.innerHTML = "<input class='switch-input' type='checkbox' id='darkModeSwitch' onChange='handleDarkModeSwitch()'/><span class='switch-label' data-on='☀️' data-off='🌙'></span><span class='switch-handle'></span>";
+	document.getElementsByClassName("site-nav")[0].appendChild(el);
+</script>
 
-
-<label class="switch">
+<!-- <label class="switch">
     <input class="switch-input" type="checkbox" id="darkModeSwitch" onChange="handleDarkModeSwitch()"/>
     <span class="switch-label" data-on="☀️" data-off="🌙"></span> 
     <span class="switch-handle"></span> 
-</label>
+</label> -->
 
 <style>
 .switch {
@@ -16,7 +28,7 @@
 	width: 100px;
 	height: 30px;
 	padding: 3px;
-	margin: 0 10px 10px 0;
+	margin: 10px 10px 10px 10px;
 	background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
 	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
 	border-radius: 18px;
