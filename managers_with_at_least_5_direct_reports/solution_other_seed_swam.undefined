@@ -1,0 +1,18 @@
+import pandas as pd, collections
+
+def find_managers(employee: pd.DataFrame) -> pd.DataFrame:
+    df = employee.groupby(["managerId"]).id.count().reset_index()
+    res = df[df.id>=5].merge(employee, left_on="managerId", right_on="id", how="inner")
+    return res[["name"]]
+
+
+
+# import pandas as pd
+
+# def find_managers(employee: pd.DataFrame) -> pd.DataFrame:
+#     agg1 = employee.groupby('managerId').id.count()
+#     agg2 = agg1.loc[agg1 >= 5].reset_index()
+#     agg3 = agg2.drop(columns=['id'])
+#     agg4 = agg3.merge(employee[['name', 'id']], left_on='managerId', right_on='id', how='inner')
+#     agg5 = agg4.drop(columns=['managerId', 'id'])
+#     return agg5
