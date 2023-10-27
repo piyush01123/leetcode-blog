@@ -66,6 +66,6 @@ public:
  {% endhighlight %}
 
  {% highlight cpp %} 
-TC: O(n)
+TC: O(n^2)
 SC: O(n)
  {% endhighlight %}
