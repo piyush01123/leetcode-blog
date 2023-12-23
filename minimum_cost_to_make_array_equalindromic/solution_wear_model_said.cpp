@@ -1,0 +1,37 @@
+class Solution {
+public:
+    long long minimumCost(vector<int>& nums) 
+    {
+        int n = nums.size();
+        sort(nums.begin(),nums.end());
+        double median = (n%2) ? nums[n/2] : (double)(nums[n/2]+nums[n/2-1])/2;
+        int cand1, cand2;
+        if(n%2 || median==(int)median)
+        {
+            cand1 = median; 
+            cand2 = median;
+        }
+        else
+        {
+            cand1 = median-.5;
+            cand2 = median+.5;
+        }
+        while(cand1>0 && !isPalindrome(to_string(cand1))) cand1--;
+        while(!isPalindrome(to_string(cand2))) cand2++;
+        long long cost1 = calculateCost(nums, cand1);
+        long long cost2 = calculateCost(nums, cand2);
+        return min(cost1, cost2);
+    }
+    long long calculateCost(vector<int>&A, int x)
+    {
+        long long cost = 0;
+        for(int a: A) cost += abs(x-a);
+        return cost;
+    }
+    bool isPalindrome(string s)
+    {
+        int n = s.length();
+        for(int i=0; i<n/2; i++) if(s[i]!=s[n-1-i]) return false;
+        return true;
+    }
+};
