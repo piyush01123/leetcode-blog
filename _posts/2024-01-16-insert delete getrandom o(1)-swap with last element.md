@@ -46,7 +46,7 @@ randomizedSet.getRandom(); // Since 2 is the only number in the set, getRandom()
 </ul>
 
 # Solution:
-We maintain an array `values` and a hashmap `positions` which stores position of each element in `values`. The idea is to swap `val` with last element of the array in `remove` method and then update the hashmap. Time complexities
+We maintain an array `values` and a hashmap `positions` which stores position of each element in `values`. The idea is to swap `val` with last element of the array in `remove` method and then update the hashmap. Time complexities are given below.
  {% highlight cpp %} 
 RandomizedSet(): Zero
 bool insert(int val): O(1)
